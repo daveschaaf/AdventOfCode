@@ -22,7 +22,7 @@ def find_as(data: str, m_idx: [int], vector: [int]):
     s_idx[1] += 2*vector[1]
     print(f"{a_idx=}")
     print(f"{s_idx=}")
-    return data[a_idx[0]][a_idx[1]] == 'A' and data[s_idx[0]][s_idx[1]] == 'S'
+    return get_data(data,a_idx[0],a_idx[1]) == 'A' and get_data(data,s_idx[0],s_idx[1]) == 'S'
     
 def get_data(data,row,col):
     row_n: int = len(data) - 1
@@ -43,18 +43,12 @@ def find_xmas(data: str):
             if data[row][col] == "X":
                 print(f"Found X at: {row},{col}")
                 for r in range(row-1,row+2):
-                    if r < 0 or r > row_n -1:
-                        continue
                     for c in range(col-1,col+2):
-                        if c < 0 or c > col_n -1:
-                            continue
-                        print(data[r][c])
-                        if data[r][c] == "M":
-                            print(f"Found M at :{r},{c}")
+                        if get_data(data,r,c) == "M":
                             drow: int = r - row
                             dcol: int = c - col
-
-                            xmas += 1
+                            if find_as(data,[r,c],[drow,dcol]):
+                                xmas += 1
     return xmas
 
 
