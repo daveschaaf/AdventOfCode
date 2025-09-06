@@ -1,6 +1,6 @@
 # Part 1
 
-from code04 import find_x, find_m, find_xmas
+from code04 import find_x, find_m, find_as, find_xmas
 
 xmas1 = [
     [".",".","X",".",".","."],
@@ -25,6 +25,12 @@ def test_find_m():
     assert find_m([".","M"]) == 1
     assert find_m([".",".","."]) == -1
     assert find_m(xmas1[1]) == 3
+
+def test_find_as():
+    assert find_as(xmas1, [1,3], [1,1]) == True
+    assert find_as(xmas1, [1,3], [0,-1]) == True
+    assert find_as(xmas1, [3,1], [0,1]) == True
+    assert find_as(xmas1, [3,1], [-1,0]) == True
 
 def test_find_xmas():
     # return the number of XMAS found

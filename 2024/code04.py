@@ -12,6 +12,19 @@ def find_m(data: str):
             return i
     return -1
 
+def find_as(data: str, m_idx: [int], vector: [int]):
+    a_idx: [int] = m_idx.copy()
+    s_idx: [int] = m_idx.copy()
+
+    a_idx[0] += vector[0]
+    a_idx[1] += vector[1]
+    s_idx[0] += 2*vector[0]
+    s_idx[1] += 2*vector[1]
+    print(f"{a_idx=}")
+    print(f"{s_idx=}")
+    return data[a_idx[0]][a_idx[1]] == 'A' and data[s_idx[0]][s_idx[1]] == 'S'
+    
+
 def find_xmas(data: str):
     row_n: int = len(data)
     col_n: int = len(data[0])
