@@ -24,6 +24,14 @@ def find_as(data: str, m_idx: [int], vector: [int]):
     print(f"{s_idx=}")
     return data[a_idx[0]][a_idx[1]] == 'A' and data[s_idx[0]][s_idx[1]] == 'S'
     
+def get_data(data,row,col):
+    row_n: int = len(data) - 1
+    col_n: int = len(data[0]) - 1
+    if row < 0 or col < 0:
+        return 0
+    if row > row_n or col > col_n:
+        return 0
+    return data[row][col]
 
 def find_xmas(data: str):
     row_n: int = len(data)
@@ -43,6 +51,9 @@ def find_xmas(data: str):
                         print(data[r][c])
                         if data[r][c] == "M":
                             print(f"Found M at :{r},{c}")
+                            drow: int = r - row
+                            dcol: int = c - col
+
                             xmas += 1
     return xmas
 
