@@ -41,21 +41,20 @@ def parse_data(location):
             parsed.append(row)
     return parsed
 
-def find_xmas(data: str):
-    row_n: int = len(data)
-    col_n: int = len(data[0])
-    m_stack: [int] = []
+def find_xmas(data: [list]):
     xmas: int = 0
-    for row in range(row_n):
-        for col in range(col_n):
+    for row in range(len(data)):
+        for col in range(len(data[0])):
             if data[row][col] == "X":
                 for r in range(row-1,row+2):
                     for c in range(col-1,col+2):
                         if get_data(data,r,c) == "M":
-                            drow: int = r - row
-                            dcol: int = c - col
-                            if find_as(data,[r,c],[drow,dcol]):
+                            if find_as(data, [r,c], [r-row,c-col]):
                                 xmas += 1
     return xmas
+
+def find_x_mas(data: [list]):
+    pass
+
 
 
