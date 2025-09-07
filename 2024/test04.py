@@ -53,7 +53,8 @@ def test_get_data():
     assert get_data(xmas1,3,1) == "M"
     assert get_data(xmas1,2,4) == "A"
     assert get_data(xmas1,3,5) == "S"
+
 def test_find_xmas():
     # return the number of XMAS found
-    assert find_xmas("XM") == True
     assert find_xmas(xmas1) == 4
+    assert find_xmas(xmas2) == 2500
