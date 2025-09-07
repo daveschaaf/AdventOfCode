@@ -1,6 +1,6 @@
 # Part 1
 
-from code04 import  find_as, find_xmas, get_data, parse_data
+from code04 import  find_as, find_xmas, get_data, parse_data, find_x_mas
 
 xmas1 = [
     [".",".","X",".",".","."],
@@ -11,6 +11,14 @@ xmas1 = [
 ]
 
 xmas2 = parse_data('04_data.dat')
+
+xmas3 = [
+    [".",".","X",".",".","."],
+    [".","S","A","M","X","M"],
+    [".","A",".",".","A","."],
+    ["X","M","A","S",".","S"],
+    [".","X",".",".",".","."]
+]
 
 def test_parse_data():
     assert len(xmas2) == 140
@@ -42,3 +50,11 @@ def test_find_xmas():
     # return the number of XMAS found
     assert find_xmas(xmas1) == 4
     assert find_xmas(xmas2) == 2500
+
+
+def test_check_m_s_corners():
+
+    assert check_m_s_corners(xmas3, )
+
+def test_find_x_mas():
+    assert find_x_mas(xmas3) == 1

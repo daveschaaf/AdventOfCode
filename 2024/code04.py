@@ -42,8 +42,34 @@ def find_xmas(data: [list]):
                                 xmas += 1
     return xmas
 
-def find_x_mas(data: [list]):
-    pass
+def check_m_s_corners(data, m_idx, s_idx):
+    
 
+def find_x_mas(data: [list]):
+    x_mas: int = 0
+    m_s: dict = {
+        (-1,-1): (1, 1),
+        (-1,1): (1,-1),
+        (1,-1): (-1,1),
+        (1,1): (-1,-1)
+    }
+    m_m: dict: {
+        (-1,-1): [(-1,1),(1,-1)],
+        (-1,1): [(-1,-1),(1,1)],
+        (1,-1): [(-1,-1),(1,1)],
+        (1,1): [(-1,1),(1,-1)]
+    }
+
+    for row in range(1,len(data)-1):
+        for col in range(1,len(data[0])-1):
+            if data[row][col] == "A":
+                for m_idx, s_idx in m_s.items():
+                    m: str = get_data(data,row + m_idx[0],col + m_idx[1])
+                    if m == "M":
+                        s: str = get_data(data,row + s_idx[0],col + s_idx[1])
+
+
+
+    return x_mas
 
 
