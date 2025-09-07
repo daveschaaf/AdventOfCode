@@ -1,6 +1,6 @@
 # Part 1
 
-from code04 import  find_as, find_xmas, get_data, parse_data, find_x_mas
+from code04 import  find_as, find_xmas, get_data, parse_data, find_x_mas, check_m_s_corners
 
 xmas1 = [
     [".",".","X",".",".","."],
@@ -53,8 +53,9 @@ def test_find_xmas():
 
 
 def test_check_m_s_corners():
-
-    assert check_m_s_corners(xmas3, )
+    assert check_m_s_corners(xmas3, (2,4)) == True
+    assert check_m_s_corners(xmas1, (2,4)) == False
 
 def test_find_x_mas():
     assert find_x_mas(xmas3) == 1
+    assert find_x_mas(xmas2) == 1933

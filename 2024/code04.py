@@ -42,34 +42,36 @@ def find_xmas(data: [list]):
                                 xmas += 1
     return xmas
 
-def check_m_s_corners(data, m_idx, s_idx):
-    
-
-def find_x_mas(data: [list]):
-    x_mas: int = 0
+def check_m_s_corners(data, a_idx):
+    a_row: int = a_idx[0]
+    a_col: int = a_idx[1]
+    mas: int = 0
+    # Key: index offset of M position
+    # Value: index offset of respective S position for opposite corner
     m_s: dict = {
         (-1,-1): (1, 1),
         (-1,1): (1,-1),
         (1,-1): (-1,1),
         (1,1): (-1,-1)
     }
-    m_m: dict: {
-        (-1,-1): [(-1,1),(1,-1)],
-        (-1,1): [(-1,-1),(1,1)],
-        (1,-1): [(-1,-1),(1,1)],
-        (1,1): [(-1,1),(1,-1)]
-    }
+    for m_idx, s_idx in m_s.items():
+        m: str = get_data(data,a_row + m_idx[0],a_col + m_idx[1])
+        if m != "M":
+            continue
+        s: str = get_data(data,a_row + s_idx[0],a_col + s_idx[1])
+        if s != "S":
+            continue
+        mas += 1
+    return mas == 2
+
+def find_x_mas(data: [list]):
+    x_mas: int = 0
 
     for row in range(1,len(data)-1):
         for col in range(1,len(data[0])-1):
             if data[row][col] == "A":
-                for m_idx, s_idx in m_s.items():
-                    m: str = get_data(data,row + m_idx[0],col + m_idx[1])
-                    if m == "M":
-                        s: str = get_data(data,row + s_idx[0],col + s_idx[1])
-
-
-
+                if check_m_s_corners(data, (row,col)):
+                    x_mas += 1
     return x_mas
 
 
