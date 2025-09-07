@@ -20,8 +20,6 @@ def find_as(data: str, m_idx: [int], vector: [int]):
     a_idx[1] += vector[1]
     s_idx[0] += 2*vector[0]
     s_idx[1] += 2*vector[1]
-    print(f"{a_idx=}")
-    print(f"{s_idx=}")
     return get_data(data,a_idx[0],a_idx[1]) == 'A' and get_data(data,s_idx[0],s_idx[1]) == 'S'
     
 def get_data(data,row,col):
@@ -33,6 +31,16 @@ def get_data(data,row,col):
         return 0
     return data[row][col]
 
+def parse_data(location):
+    parsed: [list] = []
+    with open(location, "r") as file:    
+        for line in file:
+            row: [str] = []
+            for c in line:
+                row.append(c)
+            parsed.append(row)
+    return parsed
+
 def find_xmas(data: str):
     row_n: int = len(data)
     col_n: int = len(data[0])
@@ -41,7 +49,6 @@ def find_xmas(data: str):
     for row in range(row_n):
         for col in range(col_n):
             if data[row][col] == "X":
-                print(f"Found X at: {row},{col}")
                 for r in range(row-1,row+2):
                     for c in range(col-1,col+2):
                         if get_data(data,r,c) == "M":

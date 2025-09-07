@@ -1,6 +1,6 @@
 # Part 1
 
-from code04 import find_x, find_m, find_as, find_xmas, get_data
+from code04 import find_x, find_m, find_as, find_xmas, get_data, parse_data
 
 xmas1 = [
     [".",".","X",".",".","."],
@@ -9,6 +9,17 @@ xmas1 = [
     ["X","M","A","S",".","S"],
     [".","X",".",".",".","."]
 ]
+
+xmas2 = parse_data('04_data.dat')
+
+def test_parse_data():
+    assert len(xmas2) == 140
+    assert len(xmas2[0]) == 141
+    assert xmas2[0][0] == "X"
+    assert xmas2[8][31] == "M"
+    assert xmas2[40][133] == "A"
+    assert xmas2[42][135] == "S"
+
      
 def test_find_x():
     # returns the index of the next X
