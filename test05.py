@@ -43,3 +43,9 @@ def test_parse_updates():
     assert len(parsed_updates) == 6
     assert parsed_updates[0] == [75,47,61,53,29]
     assert parsed_updates[-1] == [97,13,75,29,47]
+
+def test_rules():
+    rule_0 = create_rule(rules[0])
+    assert rule_0.val == 47
+    assert rule_0.next.val == 53
+    assert rule_0.next.next.val == None
