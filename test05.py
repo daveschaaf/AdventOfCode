@@ -1,8 +1,7 @@
 # 2024 Day 5 Test
+from code05 import parse_rules, parse_updates
 
-
-rules = """
-47|53
+rules = """47|53
 97|13
 97|61
 97|47
@@ -22,17 +21,14 @@ rules = """
 75|61
 47|29
 75|13
-53|13
-"""
+53|13"""
 
-updates = """
-75,47,61,53,29
+updates = """75,47,61,53,29
 97,61,53,29,13
 75,29,13
 75,97,47,61,53
 61,13,29
-97,13,75,29,47
-"""
+97,13,75,29,47"""
 
 parsed_rules = parse_rules(rules)
 parsed_updates = parse_updates(updates)
@@ -45,5 +41,5 @@ def test_parse_rules():
 
 def test_parse_updates():
     assert len(parsed_updates) == 6
-    assert parsed_upates[0] == [75,47,61,53,29]
-    assert parsed_upates[-1] == [97,13,75,29,47]
+    assert parsed_updates[0] == [75,47,61,53,29]
+    assert parsed_updates[-1] == [97,13,75,29,47]
