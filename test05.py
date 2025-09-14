@@ -1,5 +1,5 @@
 # 2024 Day 5 Test
-from code05 import parse_rules, parse_updates
+from code05 import *
 
 rules = """47|53
 97|13
@@ -45,7 +45,22 @@ def test_parse_updates():
     assert parsed_updates[-1] == [97,13,75,29,47]
 
 def test_rules():
-    rule_0 = create_rule(rules[0])
-    assert rule_0.val == 47
-    assert rule_0.next.val == 53
-    assert rule_0.next.next.val == None
+    linked_list_0: Linkedlist = LinkedList([[47,53]])
+    assert linked_list_0.root.val == None
+    assert linked_list_0.root.next.val == 47
+    assert linked_list_0.root.next.next.val == 53
+
+    linked_list_0.add_rule([97, 47])
+    assert linked_list_0.root.next.val == 97
+    assert linked_list_0.root.next.next.val == 47
+    assert linked_list_0.root.next.next.next.val == 53
+
+    # linked_list_1 = LinkedList(parsed_rules[0:4])
+    # rule_0 = linked_list.root
+    #
+    # assert rule_0.val == None
+    # assert rule_0.next.val == 97
+    # assert rule_0.next.next.val == 13
+    # assert rule_0.next.next.next.val == 61
+    # assert rule_0.next.next.next.next.val == 47
+    # assert rule_0.next.next.next.next.next.val == 53
