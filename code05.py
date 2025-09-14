@@ -98,7 +98,7 @@ class LinkedList():
         return val in self.vals
 
     def get(self, val):
-        node: LinkedList = self.root.next
+        node: LinkedList = self.first()
         while node:
             if node.val == val:
                 return node
@@ -138,3 +138,32 @@ class LinkedList():
             return True
         else:
             return False
+
+class UpdatePrinter():
+    def __init__(self, updates: list[list[int]], rules: LinkedList ):
+        print(updates)
+        self.rules: LinkedList = rules
+        self.updates: list[list[int]] = []
+        for update in updates:
+            if self.validate(update):
+                self.updates.append(update)
+
+    def validate(self, update: list[int]):
+        print("VALIDATING")
+        val_i: int = 0
+        node: ListNode = self.rules.get(update[val_i])
+        if not node:
+            return False
+        while node.val:
+            if node.val == update[val_i]:
+                print(f"Found val {update[val_i]}")
+                val_i += 1
+                if val_i == len(update):
+                    print('returning TRUE')
+                    return True
+            node = node.next
+        print('returning FALSE')
+        return False       
+
+
+

@@ -98,3 +98,12 @@ def test_rules():
     unique_rules: list[int] = list(set([item for sublist in parsed_rules for item in sublist]))
     assert len(linked_list_full) == len(unique_rules)
     assert linked_list_full == [97, 75, 47, 61, 53, 29, 13]
+
+    printer_1: UpdatePrinter = UpdatePrinter(parsed_updates, linked_list_full)
+ 
+    assert printer_1.validate(parsed_updates[0]) == True
+    assert printer_1.validate(parsed_updates[1]) == True
+    assert printer_1.validate(parsed_updates[2]) == True
+    assert printer_1.validate(parsed_updates[3]) == False
+    assert printer_1.validate(parsed_updates[4]) == False
+    assert printer_1.validate(parsed_updates[5]) == False
