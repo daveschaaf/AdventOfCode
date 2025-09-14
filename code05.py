@@ -27,15 +27,17 @@ class LinkedList():
     def add_rule(self, rule: list[int]):
         first: int = rule[0]
         second: int = rule[1]
-        node: ListNode = self.root
-        
-        while node.next is not None:
-            if second == node.next.val:
-                new_node: ListNode = ListNode(first)
-                old_next: ListNode = node.next
-                new_node.next = old_next
+        root: ListNode = self.root
+        node: ListNode = self.root.next
+        while node is not None:
+            if second == node.val:
+                new_node: ListNode = ListNode(first, node)
+                root.next = new_node
+            elif first == node.val:
+                new_node: ListNode = ListNode(second, node.next)
                 node.next = new_node
-            node = node.next.next
+            root = node
+            node = root.next
         print(self)
 
     def __repr__(self):
