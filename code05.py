@@ -1,5 +1,6 @@
 # 2024 Day 5 Part 1
 
+
 def parse_rules(rules: str):
     rules = rules.split('\n')
     parsed_rules: list[list[int]] = []
@@ -35,7 +36,7 @@ class LinkedList():
         rule0: list[int] = rules.pop()
         rule_first: int = rule0[0]
         rule_second: int = rule0[1]
-        
+            
         node0: ListNode = self.insert_between(rule_first, self.root, self.tail)
         self.insert_between(rule_second, node0, node0.next)
 
@@ -149,21 +150,46 @@ class UpdatePrinter():
                 self.updates.append(update)
 
     def validate(self, update: list[int]):
-        print("VALIDATING")
         val_i: int = 0
         node: ListNode = self.rules.get(update[val_i])
         if not node:
             return False
         while node.val:
             if node.val == update[val_i]:
-                print(f"Found val {update[val_i]}")
                 val_i += 1
                 if val_i == len(update):
-                    print('returning TRUE')
                     return True
             node = node.next
-        print('returning FALSE')
-        return False       
+        return False
 
+    def part1(self):
+        return sum([update[len(update) // 2] for update in self.updates])
 
+if __name__ == "__main__":
+    with open('05_data.dat', 'r') as file:
+        raw_data: list[str] = [] 
+        for line in file:
+            raw_data.append(line.replace('\n', ''))
+    rules: list[list[int]] =  []
+    updates: list[list[int]] = []
+    rules_done: bool = False
+
+    for data in raw_data:
+        if rules_done:
+            updates.append(data)
+        elif data == '':
+            rules_done = True
+        else:
+            rules.append(data)
+
+    parsed_rules: list[list[int]] = parsed_rules(rules)
+    parsed_updates:list[list[int]] = parse_updates(updates)
+
+    rules_list: LinkedList = LinkedList(parsed_rules)
+    update_printer: UpdatePrinter = UpdatePrinter(updates, rules_list)
+    print('2024 Day 5, Part 1 Solution:')
+    solution = update_printer.part1()
+    print(solution)
+
+    
 

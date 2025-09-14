@@ -107,3 +107,6 @@ def test_rules():
     assert printer_1.validate(parsed_updates[3]) == False
     assert printer_1.validate(parsed_updates[4]) == False
     assert printer_1.validate(parsed_updates[5]) == False
+
+    assert printer_1.part1() == 143
+
