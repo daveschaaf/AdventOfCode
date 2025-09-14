@@ -183,7 +183,8 @@ if __name__ == "__main__":
     parsed_updates:list[list[int]] = parse_updates(updates)
 
     rules_list: LinkedList = LinkedList(parsed_rules)
-    update_printer: UpdatePrinter = UpdatePrinter(updates, rules_list)
+    update_printer: UpdatePrinter = UpdatePrinter(parsed_updates, rules_list)
+   
     print('2024 Day 5, Part 1 Solution:')
     solution = update_printer.part1()
     print(solution)
