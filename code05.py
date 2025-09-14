@@ -1,5 +1,25 @@
 # 2024 Day 5 Part 1
+def create_full_dataset(filename):
+    with open(filename, 'r') as file:
+        raw_data: list[str] = [] 
+        for line in file:
+            raw_data.append(line.replace('\n', ''))
+    rules: list[list[int]] =  []
+    updates: list[list[int]] = []
+    rules_done: bool = False
 
+    for data in raw_data:
+        if rules_done:
+            updates.append(data)
+        elif data == '':
+            rules_done = True
+        else:
+            rules.append(data)
+
+    parsed_rules: list[list[int]] = parse_rules(rules)
+    parsed_updates:list[list[int]] = parse_updates(updates)
+
+    return parsed_rules, parsed_updates
 
 def parse_rules(rules: list[str]):
     parsed_rules: list[list[int]] = []
@@ -163,28 +183,13 @@ class UpdatePrinter():
         return sum([update[len(update) // 2] for update in self.updates])
 
 if __name__ == "__main__":
-    with open('05_data.dat', 'r') as file:
-        raw_data: list[str] = [] 
-        for line in file:
-            raw_data.append(line.replace('\n', ''))
-    rules: list[list[int]] =  []
-    updates: list[list[int]] = []
-    rules_done: bool = False
+    parsed_rules, parsed_updates = create_full_dataset('05_data.dat')
 
-    for data in raw_data:
-        if rules_done:
-            updates.append(data)
-        elif data == '':
-            rules_done = True
-        else:
-            rules.append(data)
-
-    parsed_rules: list[list[int]] = parse_rules(rules)
-    parsed_updates:list[list[int]] = parse_updates(updates)
-
+    unique_rules: list[int] = list(set([item for sublist in parsed_rules for item in sublist]))
+    print(len(unique_rules))
     rules_list: LinkedList = LinkedList(parsed_rules)
+    print(len(rules_list))
     update_printer: UpdatePrinter = UpdatePrinter(parsed_updates, rules_list)
-   
     print('2024 Day 5, Part 1 Solution:')
     solution = update_printer.part1()
     print(solution)
