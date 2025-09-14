@@ -48,19 +48,52 @@ def test_rules():
     linked_list_0: Linkedlist = LinkedList([[47,53]])
     assert linked_list_0.root.val == None
     assert linked_list_0.root.next.val == 47
+    assert linked_list_0.root.prev == None
+    assert linked_list_0.root.next.prev.val == None
     assert linked_list_0.root.next.next.val == 53
-
+    assert linked_list_0.root.next.next.next.val == None
+    assert linked_list_0.root.next.next.next.prev.val == 53
+    
     linked_list_0.add_rule([97, 47])
     assert linked_list_0.root.next.val == 97
     assert linked_list_0.root.next.next.val == 47
     assert linked_list_0.root.next.next.next.val == 53
+    
+    linked_list_0.add_rule([53,29])
+    assert linked_list_0.root.next.val == 97
+    assert linked_list_0.root.next.next.val == 47
+    assert linked_list_0.root.next.next.next.val == 53
+    assert linked_list_0.root.next.next.next.next.val == 29
 
-    # linked_list_1 = LinkedList(parsed_rules[0:4])
-    # rule_0 = linked_list.root
-    #
-    # assert rule_0.val == None
-    # assert rule_0.next.val == 97
-    # assert rule_0.next.next.val == 13
-    # assert rule_0.next.next.next.val == 61
-    # assert rule_0.next.next.next.next.val == 47
-    # assert rule_0.next.next.next.next.next.val == 53
+    linked_list_1: LinkedList = LinkedList(parsed_rules[0:4])
+    assert linked_list_1 == [97, 13, 61, 47, 53]
+    assert linked_list_1.can_add_rule([97, 75]) == True
+    linked_list_1.add_rule([97,75])
+    assert linked_list_1 == [97, 75, 13, 61, 47, 53]
+
+    linked_list_2: LinkedList = LinkedList([parsed_rules[0]])
+    assert linked_list_2 == [47, 53]
+    assert linked_list_2.can_add_rule([97, 13]) == False
+    assert linked_list_2.can_add_rule([97, 61]) == False
+    assert linked_list_2.can_add_rule([97, 47]) == True
+    linked_list_2.add_rule([97, 47])
+    assert linked_list_2 == [97, 47, 53]
+    assert linked_list_2.can_add_rule([75,29]) == False
+    assert linked_list_2.can_add_rule([61,13]) == False
+    assert linked_list_2.can_add_rule([75,53]) == True
+    linked_list_2.add_rule([75, 53])
+    assert linked_list_2 == [97, 47, 75, 53]
+    assert linked_list_2.can_add_rule([29,13]) == False
+    assert linked_list_2.can_add_rule([97,29]) == True
+    linked_list_2.add_rule([97,29])
+    assert linked_list_2 == [97, 29, 47, 75, 53]
+    linked_list_2.add_rule([75, 29])
+    assert linked_list_2 == [97, 75, 29, 47, 53]
+    linked_list_2.add_rule([47, 29])
+    assert linked_list_2 == [97, 75, 47, 29, 53]
+    linked_list_2.add_rule([75, 47])
+    assert linked_list_2 == [97, 75, 47, 29, 53]
+
+    linked_list_full: LinkedList = LinkedList(parsed_rules)
+    unique_rules: list[int] = list(set([item for sublist in parsed_rules for item in sublist]))
+    assert len(linked_list_full) == len(unique_rules)
