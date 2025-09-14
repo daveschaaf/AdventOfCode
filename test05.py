@@ -30,7 +30,9 @@ updates = """75,47,61,53,29
 61,13,29
 97,13,75,29,47"""
 
+rules = rules.split('\n')
 parsed_rules = parse_rules(rules)
+updates = updates.split('\n')
 parsed_updates = parse_updates(updates)
 
 

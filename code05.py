@@ -1,15 +1,13 @@
 # 2024 Day 5 Part 1
 
 
-def parse_rules(rules: str):
-    rules = rules.split('\n')
+def parse_rules(rules: list[str]):
     parsed_rules: list[list[int]] = []
     for line in rules:
         parsed_rules.append([int(n) for n in line.split("|")])
     return parsed_rules
 
-def parse_updates(updates):
-    updates = updates.split('\n')
+def parse_updates(updates: list[str]):
     parsed_updates: list[list[int]] = []
     for line in updates:
         parsed_updates.append([int(n) for n in line.split(",")])
@@ -142,7 +140,6 @@ class LinkedList():
 
 class UpdatePrinter():
     def __init__(self, updates: list[list[int]], rules: LinkedList ):
-        print(updates)
         self.rules: LinkedList = rules
         self.updates: list[list[int]] = []
         for update in updates:
@@ -182,7 +179,7 @@ if __name__ == "__main__":
         else:
             rules.append(data)
 
-    parsed_rules: list[list[int]] = parsed_rules(rules)
+    parsed_rules: list[list[int]] = parse_rules(rules)
     parsed_updates:list[list[int]] = parse_updates(updates)
 
     rules_list: LinkedList = LinkedList(parsed_rules)
