@@ -94,6 +94,7 @@ def test_rules():
     linked_list_2.add_rule([75, 47])
     assert linked_list_2 == [97, 75, 47, 29, 53]
 
-    linked_list_full: LinkedList = LinkedList(parsed_rules)
+    linked_list_full: LinkedList = LinkedList(parsed_rules.copy())
     unique_rules: list[int] = list(set([item for sublist in parsed_rules for item in sublist]))
     assert len(linked_list_full) == len(unique_rules)
+    assert linked_list_full == [97, 75, 47, 61, 53, 29, 13]
