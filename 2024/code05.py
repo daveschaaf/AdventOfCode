@@ -1,4 +1,6 @@
 # 2024 Day 5 Part 1
+from collections import defaultdict
+
 def create_full_dataset(filename) -> tuple[list[list[int]], list[list[int]]]:
     with open(filename, 'r') as file:
         raw_data: list[str] = [] 
@@ -17,6 +19,7 @@ def create_full_dataset(filename) -> tuple[list[list[int]], list[list[int]]]:
             rules.append(data)
 
     parsed_rules: list[list[int]] = parse_rules(rules)
+    parsed_rules.sort()
     parsed_updates:list[list[int]] = parse_updates(updates)
 
     return parsed_rules, parsed_updates
@@ -49,12 +52,11 @@ class LinkedList():
         self.vals: set = set()
         self.create_rules(rules)
 
-
     def create_rules(self, rules) -> None:
-        rule0: list[int] = rules.pop()
+        rule0: list[int] = rules[0]
         rule_first: int = rule0[0]
         rule_second: int = rule0[1]
-            
+
         node0: ListNode = self.insert_between(rule_first, self.root, self.tail)
         self.insert_between(rule_second, node0, node0.next)
 
@@ -67,23 +69,31 @@ class LinkedList():
     def can_add_rule(self, rule) -> bool:
         return rule[0] in self.vals or rule[1] in self.vals
 
-    def add_rule(self, rule) -> ListNode:
+    def add_rule(self, rule) -> ListNode | None:
         rule_first: int = rule[0]
         rule_second: int = rule[1]
+        has_first: bool = self.has_val(rule_first)
+        has_second: bool = self.has_val(rule_second)
 
-        if self.has_val(rule_first) and self.has_val(rule_second):
-            second_node: ListNode = self.get(rule_second)
-            node: ListNode = second_node.next
-            while node.val:
+        if has_first and has_second:
+            second_node: ListNode | None = self.get(rule_second)
+            if not second_node:
+                raise ValueError("node is None, expected ListNode")
+            node: ListNode | None = second_node.next
+            while node and node.val:
                 if node.val == rule_first:
-                    self.move_node(node, second_node.prev, second_node)
+                    self.move_node(second_node, node, node.next)
                     break
                 node = node.next
-        elif self.has_val(rule_first):
+        elif has_first:
             node = self.get(rule_first)
+            if not node:
+                raise ValueError("node is None, expected ListNode")
             self.insert_between(rule_second, node, node.next)
-        elif self.has_val(rule_second):
+        elif has_second:
             node = self.get(rule_second)
+            if not node:
+                raise ValueError("node is None, expected ListNode")
             self.insert_between(rule_first, node.prev, node)
         else:
             raise ValueError(f"Unable to add Rule {rule} into existing LinkedList")
@@ -117,18 +127,18 @@ class LinkedList():
     def has_val(self, val) -> bool:
         return val in self.vals
 
-    def get(self, val) -> ListNode:
-        node: ListNode = self.first()
+    def get(self, val) -> ListNode | None:
+        node: ListNode | None = self.first()
         while node:
             if node.val == val:
                 return node
             else:
                 node = node.next
 
-    def first(self) -> ListNode:
+    def first(self) -> ListNode | None:
         return self.root.next
 
-    def last(self) -> ListNode:
+    def last(self) -> ListNode | None:
         return self.tail.prev
 
     def __repr__(self) -> str:
@@ -139,8 +149,8 @@ class LinkedList():
 
     def as_list(self) -> list[int]:
         vals: list[int] = []
-        node: ListNode = self.first()
-        while node.val:
+        node: ListNode | None = self.first()
+        while node and node.val:
             vals.append(node.val)
             node = node.next
         return vals
@@ -162,17 +172,19 @@ class LinkedList():
 class UpdatePrinter():
     def __init__(self, updates: list[list[int]], rules: LinkedList ):
         self.rules: LinkedList = rules
-        self.updates: list[list[int]] = []
+        self.valid_updates: list[list[int]] = []
+        if len(updates) > 0:
+            self.validate_updates(updates)
+
+    def validate_updates(self, updates: list[list[int]]) -> None:
         for update in updates:
             if self.validate(update):
-                self.updates.append(update)
+                self.valid_updates.append(update)
 
     def validate(self, update: list[int]) -> bool:
         val_i: int = 0
-        node: ListNode = self.rules.get(update[val_i])
-        if not node:
-            return False
-        while node.val:
+        node: ListNode | None = self.rules.get(update[val_i])
+        while node and node.val:
             if node.val == update[val_i]:
                 val_i += 1
                 if val_i == len(update):
@@ -181,19 +193,16 @@ class UpdatePrinter():
         return False
 
     def part1(self):
-        return sum([update[len(update) // 2] for update in self.updates])
+        return sum([update[len(update) // 2] for update in self.valid_updates])
 
 if __name__ == "__main__":
     parsed_rules, parsed_updates = create_full_dataset('05_data.dat')
-
-    unique_rules: list[int] = list(set([item for sublist in parsed_rules for item in sublist]))
-    print(len(unique_rules))
-    rules_list: LinkedList = LinkedList(parsed_rules)
-    print(len(rules_list))
-    update_printer: UpdatePrinter = UpdatePrinter(parsed_updates, rules_list)
-    print('2024 Day 5, Part 1 Solution:')
-    solution = update_printer.part1()
-    print(solution)
-
     
-
+    unique_rules: list[int] = list(set([item for sublist in parsed_rules.copy() for item in sublist]))
+    rules_list: LinkedList = LinkedList(parsed_rules.copy())
+    update_printer: UpdatePrinter = UpdatePrinter(parsed_updates, rules_list)
+    
+    solution = update_printer.part1()
+    
+    print('2024 Day 5, Part 1 Solution:')
+    print(solution)
