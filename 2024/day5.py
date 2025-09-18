@@ -48,6 +48,30 @@ def validate(update, rules):
 
 
 
+def rule_valid(update, rule):
+    first_i = update.index(rule[0])
+    try:
+        update.index(rule[1], first_i)
+    except ValueError:
+        return False
+    return True
+
+def part2(update, rules):
+    applied_rules = []
+    for rule in rules:
+        if rule[0] in update and rule[1] in update:
+            applied_rules.append(rule)
+
+    while not validate(update, applied_rules):
+        for rule in applied_rules:
+            if not rule_valid(update, rule):
+                first_i = update.index(rule[0])
+                second_i = update.index(rule[1])
+                update[first_i], update[second_i] = update[second_i], update[first_i]
+    return update
+
+
+
 
 
 if __name__ == "__main__":
@@ -62,9 +86,18 @@ if __name__ == "__main__":
         else:
             invalid_updates.append(update)
 
+
         
     print(len(updates))
     print(len(valid_updates))
     print(len(invalid_updates))
     print(sum(u[len(u) // 2] for u in valid_updates))
     # 7951  high
+    # 4609 Correct Part 1
+
+    fixed_updates = []
+    for update in invalid_updates:
+        print('Fixing rule')
+        fixed_updates.append(part2(update, rules))
+    print( sum([u[len(u) //2] for u in fixed_updates]) )
+
