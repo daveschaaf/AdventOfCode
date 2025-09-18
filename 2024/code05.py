@@ -50,7 +50,8 @@ class LinkedList():
         self.root.next = self.tail
         self.tail.prev = self.root
         self.vals: set = set()
-        self.create_rules(rules)
+        self.rules = []
+        self.create_rules(rules.copy())
 
     def create_rules(self, rules) -> None:
         rule0: list[int] = rules[0]
@@ -59,6 +60,7 @@ class LinkedList():
 
         node0: ListNode = self.insert_between(rule_first, self.root, self.tail)
         self.insert_between(rule_second, node0, node0.next)
+        self.rules.append(rule0)
 
         while len(rules) > 0:
             for rule in rules:
@@ -97,6 +99,7 @@ class LinkedList():
             self.insert_between(rule_first, node.prev, node)
         else:
             raise ValueError(f"Unable to add Rule {rule} into existing LinkedList")
+        self.rules.append(rule)
         return node
 
     def move_node(self, node, prev, next) -> ListNode:
@@ -199,8 +202,21 @@ if __name__ == "__main__":
     parsed_rules, parsed_updates = create_full_dataset('05_data.dat')
     
     unique_rules: list[int] = list(set([item for sublist in parsed_rules.copy() for item in sublist]))
-    rules_list: LinkedList = LinkedList(parsed_rules.copy())
+    rules_list: LinkedList = LinkedList([parsed_rules.copy()[0]])
     update_printer: UpdatePrinter = UpdatePrinter(parsed_updates, rules_list)
+
+    while len(parsed_rules) > 0:
+        for rule in parsed_rules:
+            if rules_list.can_add_rule(rule):
+                rules_list.add_rule(rule)
+                update_printer = UpdatePrinter(rules_list.rules, rules_list)
+                if update_printer.validate(rule) == False:
+                    print('BROKE')
+                    print(f"{rules_list=}")
+                    print(f"{rule=}")
+                    break
+                parsed_rules.remove(rule)
+
     
     solution = update_printer.part1()
     

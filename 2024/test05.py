@@ -69,7 +69,6 @@ def test_rules():
     assert linked_list_0.root.next.next.next.val == 53
     assert linked_list_0.root.next.next.next.next.val == 29
 
-    print(parsed_rules[0:4])
     linked_list_1: LinkedList = LinkedList(parsed_rules[0:4])
     assert linked_list_1 == [97, 61, 13, 47, 53]
     assert linked_list_1.can_add_rule([97, 75]) == True
