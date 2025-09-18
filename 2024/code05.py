@@ -1,6 +1,4 @@
 # 2024 Day 5 Part 1
-from typing import Optional
-
 def create_full_dataset(filename) -> tuple[list[list[int]], list[list[int]]]:
     with open(filename, 'r') as file:
         raw_data: list[str] = [] 
@@ -37,9 +35,9 @@ def parse_updates(updates: list[str]) -> list[list[int]]:
 
 class ListNode():
     def __init__(self, val = None, prev = None, next = None):
-        self.val: Optional[int]= val
-        self.next: Optional[ListNode] = next
-        self.prev: Optional[ListNode] = prev
+        self.val: int | None = val
+        self.next: ListNode | None = next
+        self.prev: ListNode | None = prev
 
 class LinkedList():
     def __init__(self, rules: list[list[int]]):
