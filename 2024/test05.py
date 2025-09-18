@@ -110,5 +110,19 @@ def test_rules():
     assert printer_1.validate(parsed_updates[4]) == False
     assert printer_1.validate(parsed_updates[5]) == False
 
+    for rule in parsed_rules:
+        assert printer_1.validate(rule) == True
+
     assert printer_1.part1() == 143
+
+def test_full_dataset():
+    parsed_rules_full, parsed_updates_full = create_full_dataset('05_data.dat')
+    
+    unique_rules: list[int] = list(set([item for sublist in parsed_rules_full.copy() for item in sublist]))
+    rules_list_full: LinkedList = LinkedList(parsed_rules_full.copy())
+    update_printer: UpdatePrinter = UpdatePrinter(parsed_updates_full, rules_list_full)
+
+    for rule in parsed_rules_full:
+        assert update_printer.validate(rule) == True
+
 
