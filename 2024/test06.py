@@ -1,8 +1,9 @@
 from code06 import *
 
-lab_map: LabMap = LabMap('06_data.dat')
 
 def test_data_parsing():
+    lab_map: LabMap = LabMap('06_data.dat')
+
     assert lab_map.map[0][0] == "."
     assert lab_map.map[0][4] == "#"
     assert len(lab_map.map) == 10
@@ -21,7 +22,13 @@ def test_data_parsing():
     assert lab_map.map[5][4] == lab_map.VISITED
     assert lab_map.map[5][5] == lab_map.VISITED
     assert lab_map.map[6][5] == lab_map.VISITED
+    assert lab_map.patrol() == 42
+
+def test_part_1():
+    lab_map: LabMap = LabMap('06_data.dat')
+    assert lab_map.patrol() == 41
 
 
-
+    full_map: LabMap = LabMap('06_data_full.dat')
+    assert full_map.patrol() == 4752
 
