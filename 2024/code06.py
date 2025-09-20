@@ -1,7 +1,55 @@
 
 class LabMap():
+    SOLDIER_UP = "^"
+    SOLDIER_LEFT = "<"
+    SOLDIER_RIGHT = ">"
+    SOLDIER_DOWN = "v"
+    SOLDIER_DIRECTION = {
+        SOLDIER_UP: (-1,0),
+        SOLDIER_RIGHT: (0,1),
+        SOLDIER_DOWN: (1,0),
+        SOLDIER_LEFT: (0,-1)
+    }
+    SOLDIERS = (SOLDIER_DOWN, SOLDIER_LEFT, SOLDIER_RIGHT, SOLDIER_UP)
+
+    TURN_RIGHT = [[ 0, 1],[-1, 0]]
+
+    VISITED = "X"
+
+
     def __init__(self, file_name: str):
         self.map = self.parse_map(file_name)
+        self.soldier: list[int] = self.find_soldier()
+        self.soldier_direction = self.SOLDIER_DIRECTION[self.map[self.soldier[0]][self.soldier[1]]]
+        self.mark_visited()
+
+    def move_soldier(self) -> list[int]:
+        row: int = self.soldier[0] + self.soldier_direction[0]
+        col: int = self.soldier[1] + self.soldier_direction[1]
+        self.soldier = [row, col]
+        self.mark_visited()
+        return self.soldier
+
+    def turn_soldier(self) -> tuple[int, int]:
+        turn = self.TURN_RIGHT
+        soldier = self.soldier_direction
+        direction = (turn[0][0]*soldier[0] + turn[0][1]*soldier[1],
+                    turn[1][0]*soldier[0] + turn[1][1]*soldier[1])
+        self.soldier_direction = direction
+        return direction
+    
+    def mark_visited(self) -> None:
+        self.map[self.soldier[0]][self.soldier[1]] = self.VISITED
+
+    def find_soldier(self) -> list[int]:
+        row: int = len(self.map)
+        col: int = len(self.map[0])
+        print(self)
+        for i in range(row):
+            for j in range(col):
+                if self.map[i][j] in self.SOLDIERS:
+                    return [i,j]
+        return [-1]
 
     def parse_map(self, file_name: str) -> list[list[str]]:
         map: list[list[str]] = []
@@ -12,8 +60,7 @@ class LabMap():
         return map
 
     def __repr__(self) -> str:
-        display = self.map
+        display = self.map.copy()
         for line in display:
             line.append("\n")
-
         return "\n"+"".join(["".join(line) for line in display])
