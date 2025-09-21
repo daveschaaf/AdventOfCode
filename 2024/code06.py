@@ -22,14 +22,9 @@ class LabMap():
     def __init__(self, file_name: str, obstruction: Optional[tuple] = None):
         self.map = self.parse_map(file_name)
         if obstruction:
-            print(f"{obstruction=}")
             self.map[obstruction[0]][obstruction[1]] = self.WALL
         self.soldier: list[int] = self.find_soldier()
         self.starting_position = self.soldier.copy()
-
-        print(f"{self.map=}")
-        print(f"{self.starting_position=}")
-        print(f"{self.soldier=}")
         self.soldier_direction = self.SOLDIER_DIRECTION[self.map[self.soldier[0]][self.soldier[1]]]
         self.detect_turn()
         self.starting_direction = self.soldier_direction

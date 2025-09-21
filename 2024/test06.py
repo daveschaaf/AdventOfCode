@@ -54,4 +54,6 @@ def test_full():
         result = blocked_map.patrol()
         if result == -1:
             loops += 1
-    assert loops == 100
+            print(f"Found loop #{loops}")
+    assert loops < 1800
+    # 1800 too high
