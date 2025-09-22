@@ -1,4 +1,5 @@
 from code06 import *
+from copy import deepcopy
 
 
 def test_data_parsing():
@@ -43,6 +44,9 @@ def test_sample():
 def test_full():
 
     full_map: LabMap = LabMap('06_data_full.dat')
+    map = deepcopy(full_map.map)
+    soldier = full_map.soldier
+    map[55][86] = full_map.SOLDIER_UP
     starting_position = full_map.soldier
     assert full_map.patrol() == 4752
     assert len(full_map.path()) == 4752
@@ -51,11 +55,11 @@ def test_full():
     for position in full_map.path():
         if position == tuple(starting_position):
             continue
-        blocked_map = LabMap(file_name = '06_data_full.dat', obstruction = position)
+        blocked_map = LabMap(map = deepcopy(map), obstruction = position)
         result = blocked_map.patrol()
         if result == -1:
             loops += 1
             print(f"Found loop #{loops}")
-    assert loops == 1
+    assert loops == 1719
     # 1800 too high
-    # 1704 incorrect
+    # 1704

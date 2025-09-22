@@ -20,14 +20,19 @@ class LabMap():
     VISITED = "X"
     WALL = "#"
 
-    def __init__(self, file_name: str, obstruction: Optional[tuple] = None):
-        self.map = self.parse_map(file_name)
+    def __init__(self, file_name: Optional[str] = None, obstruction: Optional[tuple[int, int]] = None, 
+                 map: Optional[list[list[int]]] = None):
+        if map:
+            self.map = map
+        elif file_name:
+            self.map = self.parse_map(file_name)
         if obstruction:
             self.map[obstruction[0]][obstruction[1]] = self.WALL
         self.soldier: tuple[int, int] = self.find_soldier()
         self.soldier_direction = self.SOLDIER_DIRECTION[self.map[self.soldier[0]][self.soldier[1]]]
         self.detect_turn()
         self.mark_visited()
+
 
     def patrol(self):
         steps = set()
@@ -37,18 +42,6 @@ class LabMap():
             step = self.soldier + self.move_soldier()
             if -1 in step:
                 return sum([1 for row in self.map for col in row if col == self.VISITED])
-        print(self)
-        return -1
-
-    def patrol(self):
-        steps = defaultdict(int)
-        step = tuple()
-        while steps[step] < 5:
-            step = self.soldier + self.move_soldier()
-            steps[step] += 1
-            if -1 in step:
-                return sum([1 for row in self.map for col in row if col == self.VISITED])
-        print(self)
         return -1
 
     def path(self):
@@ -69,7 +62,11 @@ class LabMap():
         else:
             if self.map[row][col] == self.WALL:
                 self.turn_soldier(self.TURN_RIGHT)
-                self.detect_turn()
+                try:
+                    self.detect_turn()
+                except RecursionError:
+                    print(self)
+                    print(self.soldier)
 
     def move_soldier(self) -> tuple[int, int]:
         row: int = self.soldier[0] + self.soldier_direction[0]
