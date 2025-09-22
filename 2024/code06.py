@@ -1,5 +1,6 @@
 from copy import deepcopy
 from typing import Optional
+from collections import defaultdict
 
 class LabMap():
     SOLDIER_UP = "^"
@@ -23,26 +24,31 @@ class LabMap():
         self.map = self.parse_map(file_name)
         if obstruction:
             self.map[obstruction[0]][obstruction[1]] = self.WALL
-        self.soldier: list[int] = self.find_soldier()
-        self.starting_position = self.soldier.copy()
+        self.soldier: tuple[int, int] = self.find_soldier()
         self.soldier_direction = self.SOLDIER_DIRECTION[self.map[self.soldier[0]][self.soldier[1]]]
         self.detect_turn()
-        self.starting_direction = self.soldier_direction
         self.mark_visited()
 
     def patrol(self):
-        looped = False
-        moves = 0
-        size = len(self.map)*len(self.map[0])
-        while not looped:
-            try:
-                self.move_soldier()
-                moves += 1
-                print(self)
-                looped = (self.soldier == self.starting_position and self.soldier_direction == self.starting_direction)
-                looped = looped or moves > size
-            except IndexError:
+        steps = set()
+        step = tuple()
+        while step not in steps:
+            steps.add(step)
+            step = self.soldier + self.move_soldier()
+            if -1 in step:
                 return sum([1 for row in self.map for col in row if col == self.VISITED])
+        print(self)
+        return -1
+
+    def patrol(self):
+        steps = defaultdict(int)
+        step = tuple()
+        while steps[step] < 5:
+            step = self.soldier + self.move_soldier()
+            steps[step] += 1
+            if -1 in step:
+                return sum([1 for row in self.map for col in row if col == self.VISITED])
+        print(self)
         return -1
 
     def path(self):
@@ -58,18 +64,24 @@ class LabMap():
     def detect_turn(self):
         row: int = self.soldier[0] + self.soldier_direction[0]
         col: int = self.soldier[1] + self.soldier_direction[1]
-        if self.map[row][col] == self.WALL:
-            self.turn_soldier(self.TURN_RIGHT)
+        if (row < 0 or row > len(self.map) - 1) or (col < 0 or col > len(self.map[0]) - 1):
+            return -1
+        else:
+            if self.map[row][col] == self.WALL:
+                self.turn_soldier(self.TURN_RIGHT)
+                self.detect_turn()
 
-    def move_soldier(self) -> list[int]:
+    def move_soldier(self) -> tuple[int, int]:
         row: int = self.soldier[0] + self.soldier_direction[0]
         col: int = self.soldier[1] + self.soldier_direction[1]
-        self.soldier = [row, col]
+        if (row < 0 or row > len(self.map) - 1) or (col < 0 or col > len(self.map[0]) - 1):
+            return (-1, -1)
+        self.soldier = (row, col)
         self.mark_visited()
         self.detect_turn()
         return self.soldier
 
-    def turn_soldier(self, turn = TURN_RIGHT) -> tuple[int, int]:
+    def turn_soldier(self, turn) -> tuple[int, int]:
         soldier = self.soldier_direction
         direction = (turn[0][0]*soldier[0] + turn[0][1]*soldier[1],
                     turn[1][0]*soldier[0] + turn[1][1]*soldier[1])
@@ -79,14 +91,14 @@ class LabMap():
     def mark_visited(self) -> None:
         self.map[self.soldier[0]][self.soldier[1]] = self.VISITED
 
-    def find_soldier(self) -> list[int]:
+    def find_soldier(self) -> tuple[int, int]:
         row: int = len(self.map)
         col: int = len(self.map[0])
         for i in range(row):
             for j in range(col):
                 if self.map[i][j] in self.SOLDIERS:
-                    return [i,j]
-        return [-1]
+                    return (i,j)
+        return (-1, -1)
 
     def parse_map(self, file_name: str) -> list[list[str]]:
         map: list[list[str]] = []
@@ -95,6 +107,7 @@ class LabMap():
                 line = str(line).replace("\n","")
                 map.append(list(line))
         return map
+
     def __str__(self) -> str:
         display = deepcopy(self.map)
         marker = [k for k, v in self.SOLDIER_DIRECTION.items() if v == self.soldier_direction][0]
