@@ -56,6 +56,6 @@ def test_full():
         if result == -1:
             loops += 1
             print(f"Found loop #{loops}")
-    assert loops == 1
+    assert loops == 1719
     # 1800 too high
     # 1704 incorrect
