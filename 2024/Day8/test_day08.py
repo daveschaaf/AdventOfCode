@@ -1,5 +1,6 @@
 # 2024 Day 8 Tests
-from day08 import parse_sample
+from day08 import *
+import pytest
 
 sample_1 = """..........
 ...#......
@@ -12,7 +13,21 @@ sample_1 = """..........
 ..........
 .........."""
 
+def map_sample_1(sample = sample_1):
+    return AntennaMap(sample)
+
 def test_parse_sample():
-    parsed_sample_1 = parse_sample(sample_1)
-    assert len(parsed_sample_1) == 10
-    assert len(parsed_sample_1[0]) == 10
+    map_1 = map_sample_1().map
+    assert len(map_1) == 10
+    assert len(map_1[0]) == 10
+    assert map_1[1][3] == "#"
+    assert map_1[3][4] == "a"
+    assert map_1[5][5] == "a"
+    assert map_1[7][6] == "#"
+
+def test_find_antennas():
+    map_1 = map_sample_1()
+    assert (3,4) in map_1.antennas
+    assert (5,5) in map_1.antennas
+
+    
