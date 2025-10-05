@@ -66,9 +66,12 @@ class Calculator():
     def add_part_2_layer(self, node_val):
         new_nodes = []
         for node in self.part_2_nodes:
-            new_nodes.append(Calculator.CalcNode(node.plus_val, node_val))
-            new_nodes.append(Calculator.CalcNode(node.multiply_val, node_val))
-            new_nodes.append(Calculator.CalcNode(node.concat_val, node_val))
+            if node.plus_val <= self.target:
+                new_nodes.append(Calculator.CalcNode(node.plus_val, node_val))
+            if node.multiply_val <= self.target:
+                new_nodes.append(Calculator.CalcNode(node.multiply_val, node_val))
+            if node.concat_val <= self.target:
+                new_nodes.append(Calculator.CalcNode(node.concat_val, node_val))
 
         self.part_2_nodes = new_nodes
 
