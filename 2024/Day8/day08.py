@@ -14,7 +14,7 @@ class AntennaMap():
             self.set_antinodes(antenna, locations)
 
 
-    def part_2(self):
+    def part_1(self):
         compiled_antinodes = set()
         for antinodes in self.antinodes.values():
             print(antinodes)

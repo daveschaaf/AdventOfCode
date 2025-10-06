@@ -128,8 +128,8 @@ def test_set_antinodes():
     assert (6,3) in map_3.antinodes["0"]
     assert (7,0) in map_3.antinodes["0"]
 
-def test_part_2():
-    assert map_sample(sample_1).part_2() == 2
-    assert map_sample(sample_2).part_2() == 4
-    assert map_sample(sample_3).part_2() == 14
+def test_part_1():
+    assert map_sample(sample_1).part_1() == 2
+    assert map_sample(sample_2).part_1() == 4
+    assert map_sample(sample_3).part_1() == 14
 
