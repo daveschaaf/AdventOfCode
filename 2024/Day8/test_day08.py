@@ -24,10 +24,22 @@ sample_2 = """..........
 ..........
 .........."""
 
+sample_3 = """......#....#
+...#....0...
+....#0....#.
+..#....0....
+....0....#..
+.#....A.....
+...#........
+#......#....
+........A...
+.........A..
+..........#.
+..........#."""
+
 
 def map_sample(sample = sample_1):
     return AntennaMap(sample)
-
 
 def test_parse_map():
     map_1 = map_sample().map
@@ -44,11 +56,25 @@ def test_parse_map():
 
 def test_find_antennas():
     map_1 = map_sample()
-    antennas = map_1.find_antennas()
-    assert (3,4) in map_1.find_antennas(), "finds antennas on the map"
-    assert (3,4) in map_1.antennas, "finds antennas on the map"
-    assert (5,5) in map_1.find_antennas(), "finds antennas on the map"
-    assert (5,5) in map_1.antennas, "finds antennas on the map"
+    assert isinstance(map_1.find_antennas(), dict)
+    assert (3,4) in map_1.antennas['a'], "finds antennas on the map"
+    assert (5,5) in map_1.antennas['a'], "finds antennas on the map"
+
+    map_3 = AntennaMap(sample_3)
+    assert len(map_3.antennas) == 2
+    
+    antennas_0 = map_3.antennas["0"]
+    assert len(antennas_0) == 4
+    assert (1,8) in antennas_0, "finds antennas on the map"
+    assert (2,5) in antennas_0, "finds antennas on the map"
+    assert (3,7) in antennas_0, "finds antennas on the map"
+    assert (4,4) in antennas_0, "finds antennas on the map"
+
+    antennas_A = map_3.antennas["A"]
+    assert len(antennas_A) == 3
+    assert (5,6) in antennas_A, "finds antennas on the map"
+    assert (8,8) in antennas_A, "finds antennas on the map"
+    assert (9,9) in antennas_A, "finds antennas on the map"
 
 def test_set_get():
     map_1 = map_sample()
@@ -64,7 +90,7 @@ def test_set_get():
 
 def test_set_antinodes():
     map_1 = map_sample()
-    map_1.set_antinodes([(3,4),(5,5)],mark = "%")
+    map_1.set_antinodes('a', [(3,4),(5,5)],mark = "%")
     assert map_1.get(1,3) == "%"
     assert map_1.get(7,6) == "%"
 
@@ -72,9 +98,38 @@ def test_set_antinodes():
     assert map_2.get(3,4) == 'a'
     assert map_2.get(5,5) == 'a'
     assert map_2.get(4,8) == 'a'
-    map_2.set_antinodes([(3,4),(5,5),(4,8)],mark = "%")
+    map_2.set_antinodes('a', [(3,4),(5,5),(4,8)],mark = "%")
+
     assert map_2.get(1,3) == "%"
     assert map_2.get(7,6) == "%"
     assert map_2.get(2,0) == "%"
     assert map_2.get(6,2) == "%"
+    
+    map_3 = map_sample(sample_3)
+
+    map_3.set_antinodes('A', map_3.antennas["A"], mark = "%")
+    assert len(map_3.antinodes["A"]) == 5
+    assert (7,7) in map_3.antinodes["A"]
+    assert (10,10) in map_3.antinodes["A"]
+    assert (11,10) in map_3.antinodes["A"]
+    assert (2,4) in map_3.antinodes["A"]
+    assert (1,3) in map_3.antinodes["A"]
+    
+    map_3.set_antinodes('0', map_3.antennas["0"], mark = "%")
+    assert len(map_3.antinodes["0"]) == 10
+    assert (0,6) in map_3.antinodes["0"]
+    assert (0,11) in map_3.antinodes["0"]
+    assert (1,3) in map_3.antinodes["0"]
+    assert (2,10) in map_3.antinodes["0"]
+    assert (3,2) in map_3.antinodes["0"]
+    assert (4,9) in map_3.antinodes["0"]
+    assert (5,1) in map_3.antinodes["0"]
+    assert (5,6) in map_3.antinodes["0"]
+    assert (6,3) in map_3.antinodes["0"]
+    assert (7,0) in map_3.antinodes["0"]
+
+def test_part_2():
+    assert map_sample(sample_1).part_2() == 2
+    assert map_sample(sample_2).part_2() == 4
+    assert map_sample(sample_3).part_2() == 14
 
