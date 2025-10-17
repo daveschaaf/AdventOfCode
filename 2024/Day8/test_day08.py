@@ -1,7 +1,6 @@
 # 2024 Day 8 Tests
 from day08 import *
 from samples08 import *
-import pytest
 
 
 def map_sample(sample = sample_1):
@@ -13,9 +12,7 @@ def test_parse_map():
     assert len(map_1[0]) == 10, 'has the correct number of columns'
     assert map_1[1][3] == "#", 'sets data in the correct position'
     assert map_1[3][4] == "a", 'sets data in the correct position'
-
     assert map_1[5][5] == "a", 'sets data in the correct position'
-
     assert map_1[7][6] == "#", 'sets data in the correct position'
 
 
@@ -56,7 +53,7 @@ def test_set_get():
 
 def test_set_antinodes():
     map_1 = map_sample()
-    map_1.set_antinodes('a', [(3,4),(5,5)],mark = "%")
+    map_1.set_antinodes_part_1('a', [(3,4),(5,5)], mark = "%")
     assert map_1.get(1,3) == "%"
     assert map_1.get(7,6) == "%"
 
@@ -64,16 +61,15 @@ def test_set_antinodes():
     assert map_2.get(3,4) == 'a'
     assert map_2.get(5,5) == 'a'
     assert map_2.get(4,8) == 'a'
-    map_2.set_antinodes('a', [(3,4),(5,5),(4,8)],mark = "%")
+    map_2.set_antinodes_part_1('a', [(3,4),(5,5),(4,8)], mark = "%")
 
     assert map_2.get(1,3) == "%"
     assert map_2.get(7,6) == "%"
     assert map_2.get(2,0) == "%"
     assert map_2.get(6,2) == "%"
-    
-    map_3 = map_sample(sample_3)
 
-    map_3.set_antinodes('A', map_3.antennas["A"], mark = "%")
+    map_3 = map_sample(sample_3)
+    map_3.set_antinodes_part_1('A', map_3.antennas["A"])
     assert len(map_3.antinodes["A"]) == 5
     assert (7,7) in map_3.antinodes["A"]
     assert (10,10) in map_3.antinodes["A"]
@@ -81,7 +77,7 @@ def test_set_antinodes():
     assert (2,4) in map_3.antinodes["A"]
     assert (1,3) in map_3.antinodes["A"]
     
-    map_3.set_antinodes('0', map_3.antennas["0"], mark = "%")
+    map_3.set_antinodes_part_1('0', map_3.antennas["0"])
     assert len(map_3.antinodes["0"]) == 10
     assert (0,6) in map_3.antinodes["0"]
     assert (0,11) in map_3.antinodes["0"]
@@ -94,17 +90,29 @@ def test_set_antinodes():
     assert (6,3) in map_3.antinodes["0"]
     assert (7,0) in map_3.antinodes["0"]
 
+
 def test_part_1():
     assert map_sample(sample_1).part_1() == 2
     assert map_sample(sample_2).part_1() == 4
     assert map_sample(sample_3).part_1() == 14
     assert map_sample(fulldata).part_1() == 354
 
-def test_part_2():
-    map_part_2 = map_sample(sample_part_2)
 
-    
-    assert map_sample(sample_part_2).part_2() == 6
-    assert map_sample(fulldata).part_2() == -1
+def test_set_antinodes_part_2():
+    map_4 = map_sample(sample_part_2)
+    map_4.set_antinodes_part_2('T', map_4.antennas['T'])
+    assert len(map_4.antinodes_part_2['T']) == 9
+
+
+    map_5 = map_sample(sample_part_2_lines)
+    map_5.set_antinodes_part_2('T', map_5.antennas['T'])
+    assert len(map_5.antinodes_part_2['T']) == 26
+
+
+
+def test_part_2():
+    assert map_sample(sample_part_2).part_2() == 9
+    assert map_sample(sample_part_2_lines).part_2() == 26
+    assert map_sample(fulldata).part_2() == 1263
     #1131 too low
 
