@@ -20,12 +20,15 @@ def compact_block(block_string):
     l = 0
     r = len(block) - 1
     while l < r-1:
-        print(f"{l=}, {r=}")
-        print(block)
         if block[l] == ".":
             while block[r] == ".":
                 r -= 1
             block[l], block[r] = block[r], block[l]
         l += 1
-    print(block)
     return "".join(block)
+
+def checksum(block_string):
+    block_string = list(filter(lambda c: c != ".",block_string))
+    block = [int(i) for i in block_string]
+    return sum([i*block[i] for i in range(len(block_string))])
+

@@ -14,3 +14,16 @@ def test_compact_block():
     assert compact_block(sample2_block) == sample2_block_compact
     assert compact_block(sample3_block) == sample3_block_compact
 
+def test_checksum():
+    assert checksum(sample1_block_compact) == (
+            0*0 +
+            1*2 +
+            2*2 +
+            3*1 +
+            4*1 +
+            5*1 +
+            6*2 +
+            7*2 +
+            8*2
+    )
+    assert checksum(sample3_block_compact) == 1928
