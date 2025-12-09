@@ -30,3 +30,4 @@ def test_checksum():
 
 def test_part1():
     assert part1(part1_input) == -1
+    # 5610071428 too low
