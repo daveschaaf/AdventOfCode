@@ -32,3 +32,7 @@ def checksum(block_string):
     block = [int(i) for i in block_string]
     return sum([i*block[i] for i in range(len(block_string))])
 
+def part1(input):
+    block = create_block(input)
+    compact = compact_block(block)
+    return checksum(compact)

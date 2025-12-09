@@ -27,3 +27,6 @@ def test_checksum():
             8*2
     )
     assert checksum(sample3_block_compact) == 1928
+
+def test_part1():
+    assert part1(part1_input) == -1
