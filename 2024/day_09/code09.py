@@ -15,4 +15,17 @@ def create_block(disk_map):
         file_id = (file_id + 1) % 10
     return "".join(result)
 
-
+def compact_block(block_string):
+    block = list(block_string)
+    l = 0
+    r = len(block) - 1
+    while l < r-1:
+        print(f"{l=}, {r=}")
+        print(block)
+        if block[l] == ".":
+            while block[r] == ".":
+                r -= 1
+            block[l], block[r] = block[r], block[l]
+        l += 1
+    print(block)
+    return "".join(block)

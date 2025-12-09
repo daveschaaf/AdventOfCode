@@ -1,6 +1,9 @@
 sample1 = "12345"
 sample1_block = "0..111....22222"
+sample1_block_compact = "022111222......"
 sample2 = "90909"
 sample2_block = "000000000111111111222222222"
+sample2_block_compact = sample2_block
 sample3 = "2333133121414131402"
 sample3_block = "00...111...2...333.44.5555.6666.777.888899"
+sample3_block_compact = "0099811188827773336446555566.............."
