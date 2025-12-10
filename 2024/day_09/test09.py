@@ -27,6 +27,16 @@ def test_checksum():
             8*2
     )
     assert checksum(list(sample3_block_compact)) == 1928
+    assert checksum(list(('00992111777.44.333....5555.6666.....8888..'))) == 2858
+
+
+
+def test_defrag_compact_block():
+    print("".join(defrag_compact_block(list(sample3_block))) )
+    print('00992111777.44.333....5555.6666.....8888..')
+    assert defrag_compact_block(list(sample3_block)) == list('00992111777.44.333....5555.6666.....8888..')
+
+
 
 def test_part1():
     assert part1(sample3) == 1928

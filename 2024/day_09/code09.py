@@ -26,8 +26,47 @@ def compact_block(block):
         l += 1
     return block
 
+def defrag_compact_block(block):
+    block.append(".")
+    last_i = len(block) - 1
+    r = last_i
+    print(f"Start block: {"".join(block)}")
+    while r > 0:
+        while block[r] == ".":
+            r -= 1
+        print(f"{r=}")
+        file_id = block[r]
+        file_end = r+1
+        print(f"{file_end=}")
+        while block[r] == file_id:
+            r -= 1
+        file_start = r+1
+        print(f"{file_start=}")
+        file_len = file_end - file_start
+        print(f"{block[file_start:file_end]}")
+        l = 0
+        while l < r:
+            while block[l] != "." and l < r - 1 :
+                l += 1
+            free_start = l
+            while block[l] == "." and l < r - 1:
+                l += 1
+            free_end = l
+            free_len = free_end - free_start
+            if free_len >= file_len:
+                free_end = free_start + file_len
+                block[free_start:free_end] = block[file_start:file_end]
+                block[file_start:file_end] = ["."]*file_len
+                print(f"Swapped block: {"".join(block)}")
+                l = r
+            l += 1
+    block.pop()
+    return block
+
+
+
 def checksum(block):
-    block = [int(n) for n in filter(lambda c: c != ".", block)]
+    block = [int(n) for n in list(filter(lambda n: n != "." ,block))]
     return sum([ i*block[int(i)] for i in range(len(block))])
 
 def part1(input):
