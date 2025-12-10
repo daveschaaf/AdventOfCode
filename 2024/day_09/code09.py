@@ -24,10 +24,11 @@ def compact_block(block):
                 r -= 1
             block[l], block[r] = block[r], block[l]
         l += 1
+    return block
 
 def checksum(block):
-    block_string = list(filter(lambda c: c != ".", block))
-    return sum([i*block[i] for i in range(len(block_string))])
+    block = [int(n) for n in filter(lambda c: c != ".", block)]
+    return sum([ i*block[int(i)] for i in range(len(block))])
 
 def part1(input):
     block = create_block(input)
