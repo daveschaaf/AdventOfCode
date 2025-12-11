@@ -19,7 +19,7 @@ def trailheads(trailmap_input):
     return zeros, trailmap
 
 def next_step(trails, trailmap):
-    steps = set()
+    steps = []
     r_bound = len(trailmap)
     c_bound = len(trailmap[0])
     any_trailpoint = next(iter(trails))
@@ -28,13 +28,18 @@ def next_step(trails, trailmap):
     for path in trails:
         step_options = [(path[0]+1,path[1]),(path[0],path[1]+1),
                         (path[0]-1,path[1]),(path[0],path[1]-1)]
-        debug(f"{step_options=}")
         for step in step_options:
             r = step[0]
             c = step[1]
             if (r>=0 and r<r_bound) and (c>=0 and c<c_bound):
                 if trailmap[r][c] == next_val:
-                    debug(f"{step} = {next_val}")
-                    steps.add(tuple([r,c]))
+                    steps.append(tuple([r,c]))
     return steps, trailmap
-        
+
+def score(trailmap_input):
+    debug("#################")
+    positions, trailmap = trailheads(trailmap_input)
+    for n in range(9):
+        positions, trailmap = next_step(positions, trailmap)
+        debug(f"{n+1} = {positions}")
+    return len(positions)
