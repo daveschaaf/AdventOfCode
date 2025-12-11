@@ -38,35 +38,38 @@ def defrag_compact_block(block):
     last_i = len(block) - 1
     r = last_i
     debug(f"Start block: {"".join(block)}")
-    while r > 0:
+    moved_files = set()
+    while "1" not in moved_files:
         while block[r] == ".":
             r -= 1
-        debug(f"{r=}")
         file_id = block[r]
+
         file_end = r+1
-        debug(f"{file_end=}")
         while block[r] == file_id:
             r -= 1
         file_start = r+1
-        debug(f"{file_start=}")
         file_len = file_end - file_start
-        debug(f"{block[file_start:file_end]}")
+        debug(f"File = {block[file_start:file_end]}")
         l = 0
-        while l < r:
+        while l < r and file_id not in moved_files:
             while block[l] != "." and l < r - 1 :
                 l += 1
             free_start = l
             while block[l] == "." and l < r - 1:
                 l += 1
-            free_end = l
+            free_end = l+1 if free_start == l else l
+
             free_len = free_end - free_start
             if free_len >= file_len:
                 free_end = free_start + file_len
                 block[free_start:free_end] = block[file_start:file_end]
                 block[file_start:file_end] = ["."]*file_len
                 debug(f"Swapped block: {"".join(block)}")
-                l = r
+                moved_files.add(file_id)
             l += 1
+        moved_files.add(file_id)
+        debug(f"Added {file_id} to moved_files")
+        debug(f"{moved_files=}")
     block.pop()
     return block
 
