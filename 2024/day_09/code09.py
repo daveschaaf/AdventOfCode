@@ -66,8 +66,12 @@ def defrag_compact_block(block):
 
 
 def checksum(block):
-    block = [int(n) for n in list(filter(lambda n: n != "." ,block))]
-    return sum([ i*block[int(i)] for i in range(len(block))])
+    block = [ 0 if n == "." else int(n) for n in block ]    
+    return sum(i*v for i, v in enumerate(block))
+    
+
+
+
 
 def part1(input):
     block = create_block(input)
