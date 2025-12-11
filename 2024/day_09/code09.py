@@ -1,8 +1,8 @@
 # 2024 Day 9 Code
-DEBUG = True
+DEBUG = False
 
 def debug(message):
-    if not DEBUG: pass
+    if not DEBUG: return
     if isinstance(message, list):
         print("".join(message))
     print(message)
@@ -81,3 +81,10 @@ def part1(input):
     block = create_block(input)
     compact = compact_block(block)
     return checksum(compact)
+
+def part2(input):
+    block = create_block(input)
+    compact = defrag_compact_block(block)
+    return checksum(compact)
+
+

@@ -27,15 +27,18 @@ def test_checksum():
             8*2
     )
     assert checksum(list(sample3_block_compact)) == 1928
-    assert checksum(list(('00992111777.44.333....5555.6666.....8888..'))) == 2858
+    assert checksum(list('00992111777.44.333....5555.6666.....8888..')) == 2858
 
 
 
 def test_defrag_compact_block():
-    print("".join(defrag_compact_block(list(sample3_block))) )
-    print('00992111777.44.333....5555.6666.....8888..')
-    assert defrag_compact_block(list(sample3_block)) == list('00992111777.44.333....5555.6666.....8888..')
+    def df_test(test_str, expectation):
+        assert defrag_compact_block(list(test_str)) == list(expectation)
 
+
+    df_test(sample3_block,'00992111777.44.333....5555.6666.....8888..')
+
+    
 
 
 def test_part1():
@@ -43,3 +46,8 @@ def test_part1():
     assert part1(part1_input) == 6346871685398
     # 5610071428 too low
     # 90273982836 too low
+
+def test_part2():
+    assert part2(part1_input) == -1
+    # 6315254517968 too low
+    
