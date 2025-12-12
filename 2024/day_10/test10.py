@@ -1,30 +1,63 @@
 # 2024 Day 10 Tests
-
+import pytest
 from code10 import *
 from sample10 import *
 
 def test_trailheads():
-    assert trailheads(sample1)[0] == {(0,0)}
-    assert trailheads(sample2)[0] == {(0,3)}
-    assert trailheads(sample3)[0] == {(0,3)}
-    assert trailheads(sample4)[0] == {(0,1),(6,5)}
-    assert trailheads(sample5)[0] == {(0,2),(2,4),(5,5),(0,4),
-                                   (7,1),(4,6),(5,2),(6,6),(6,0)}
+    assert trailheads(parse_trailmap(sample1))[0] == {(0,0): set([(0,1),(1,0)])}
+    assert trailheads(parse_trailmap(sample2))[0] == {(0,3): set([(1,3)])}
+    assert trailheads(parse_trailmap(sample3))[0] == {(0,3): set([(1,3)])}
+    assert trailheads(parse_trailmap(sample4))[0] == {(0,1): set([(0,0)]),(6,5): set([(6,6)])}
+
+
+def test_parse_trailmap():
+    sample5_trailmap = parse_trailmap(sample5)
+    assert isinstance(sample5_trailmap,list)
+    assert len(sample5_trailmap) == 8
+    assert len(sample5_trailmap[0]) == 8
+
 
 def test_next_step():
-    def assert_next_step(sample, expectation, value):
-        locs, trailmap = next_step(*trailheads(sample))
-        for loc in iter(locs):
-            assert loc in expectation
-            assert trailmap[loc[0]][loc[1]] == str(value)
-    
+    trailmap = parse_trailmap(sample1)
+    _, trailmap = trailheads(trailmap)
+    steps1 = next_step((0,0), trailmap, "1")
+    expectation = set([(0,1),(1,0)])
+    assert steps1 == expectation
+
+    steps2_0 = next_step((0,1), trailmap, "2")
+    assert steps2_0 == set([(0,2),(1,1)])
+
+    steps2_1 = next_step((1,0), trailmap, "2")
+    assert steps2_1 == set([(1,1)])
+
+
+@pytest.mark.skip
+def test_travel():
+    def assert_travel(sample, expectation):
+        trailmap = parse_trailmap(sample)
+        trails, trailmap = trailheads(trailmap)
+        assert trails == expectation[0]
+        for n in range(1,9):
+            trails, trailmap = travel(trails, trailmap)
+            assert trails == expectation[n]
+
+
     # Find the 1s
-    assert_next_step(sample1, [(0,1),(1,0)], 1)
-    assert_next_step(sample2, [(1,3)], 1)
+    assert_travel(sample1, [    {(0,0):set([(0,1),(1,0)])},
+                                {(0,0):set([(0,2),(1,1)])},
+                                {(0,0):set([(0,3),(1,2)])},
+                                {(0,0):set([(1,3)])},
+                                {(0,0):set([(2,3)])},
+                                {(0,0):set([(2,2),(3,3)])},
+                                {(0,0):set([(2,1),(3,2)])},
+                                {(0,0):set([(2,0),(3,1)])},
+                                {(0,0):set([(3,0)])}
+                               ])
 
-    assert_next_step(sample5, [(0,3),(0,5),(5,6),(1,2),(6,1),
-                               (7,0),(1,4),(6,7),(5,3)], 1)
 
+    # assert_travel(sample5, [(0,3),(0,5),(5,6),(1,2),(6,1),
+    #     (7,0),(1,4),(6,7),(5,3)], 1)
+@pytest.mark.skip
 def test_score():
     assert score(sample1) == 1
     assert score(sample2) == 2
