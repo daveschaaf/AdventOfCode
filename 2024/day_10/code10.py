@@ -25,7 +25,7 @@ def trailheads(trailmap):
     return zeros, trailmap
 
 def travel(trails, trailmap):
-    any_trailpoint = list(trails.keys())[0]
+    any_trailpoint = list(list(trails.values())[0])[0]
     current_val = int(trailmap[any_trailpoint[0]][any_trailpoint[1]])
     next_val = str(current_val + 1)
     for origin, paths in trails.items():

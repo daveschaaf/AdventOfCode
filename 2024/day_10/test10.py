@@ -31,7 +31,6 @@ def test_next_step():
     assert steps2_1 == set([(1,1)])
 
 
-@pytest.mark.skip
 def test_travel():
     def assert_travel(sample, expectation):
         trailmap = parse_trailmap(sample)
