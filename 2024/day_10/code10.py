@@ -53,9 +53,10 @@ def next_step(path, trailmap, next_val):
 
 def score(trailmap_input):
     debug("#################")
-    positions, trailmap = trailheads(trailmap_input)
-    for n in range(8):
-        positions, trailmap = next_step(positions, trailmap)
-        debug(f"{n+1} = {positions}")
-    nines = sum([len(paths) for paths in positions.values()])
+    trailmap = parse_trailmap(trailmap_input)
+    trails, trailmap = trailheads(trailmap)
+    for n in range(2,10):
+        trails, trailmap = travel(trails, trailmap)
+        debug(f"{n} = {trails}")
+    nines = sum([len(paths) for paths in trails.values()])
     return nines

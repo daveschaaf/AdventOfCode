@@ -54,14 +54,11 @@ def test_travel():
                                ])
 
 
-    # assert_travel(sample5, [(0,3),(0,5),(5,6),(1,2),(6,1),
-    #     (7,0),(1,4),(6,7),(5,3)], 1)
-@pytest.mark.skip
 def test_score():
     assert score(sample1) == 1
-    assert score(sample2) == 2
-    assert score(sample3) == 4
-    assert score(sample4) == 3
+    # assert score(sample2) == 2
+    # assert score(sample3) == 4
+    # assert score(sample4) == 3
     # assert score(sample5) == 36
 
 
