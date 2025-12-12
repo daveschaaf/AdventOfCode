@@ -56,9 +56,9 @@ def test_travel():
 
 def test_score():
     assert score(sample1) == 1
-    # assert score(sample2) == 2
-    # assert score(sample3) == 4
-    # assert score(sample4) == 3
-    # assert score(sample5) == 36
-
+    assert score(sample2) == 2
+    assert score(sample3) == 4
+    assert score(sample4) == 3
+    assert score(sample5) == 36
+    assert score(puzzle) == 512
 
