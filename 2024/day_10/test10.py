@@ -61,7 +61,20 @@ def test_travel():
                                ])
 def test_travel_path():
     trailmap = parse_trailmap(sample1)
-    trails = trailheads_for_paths(trailmap)
+    trails = {(0,0): {
+                                ((0,0), (0,1)), 
+                                ((0,0), (1,0))
+                              }
+                      }
+    expectation = {(0,0): {
+                                ((0,0), (0,1), (0,2)), 
+                                ((0,0), (0,1), (1,1)),                        
+                                ((0,0), (1,0), (1,1))
+                              }
+                      }
+
+    assert travel_path(trails, trailmap, "2") == expectation 
+
 
 def test_score():
     assert score({(0,0):set([(2,3)])}) == 1

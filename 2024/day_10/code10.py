@@ -52,19 +52,9 @@ def travel(trails, trailmap):
 
 def travel_path(trails, trailmap, next_val):
     for origin, paths in trails.items():
-        # items = {
-        #     (0,0): {
-        #         [series of steps],
-        #         [series of setps]
-        #     } # set
-        # }
         fresh_paths = set()
         for path in paths:
-            # path = [series of tuples]
-            # find all the possible next steps
             path_steps = next_step(path[-1], trailmap, next_val)
-            # for each of the returned steps
-            # add a full path series to the origin
             if len(path_steps) > 0:
                 for step in path_steps:
                     full_path = path + (step,) # This is some funky syntax....
@@ -88,12 +78,6 @@ def next_step(path, trailmap, next_val):
     return steps
 
 def find_path(path, trailmap, next_val):
-    # {
-    #     (0,0): {
-    #         [series of steps],
-    #         [series of setps]
-    #     } # set
-    # }
     r_bound = len(trailmap)
     c_bound = len(trailmap[0])
     steps = set()
@@ -126,11 +110,6 @@ def part2(trailmap_input):
     debug("###### PART 2 ######")
     trailmap = parse_trailmap(trailmap_input)
     trails = trailheads_for_paths(trailmap)
-    # trails = {
-    #           (0,1): set([(0,0)]),
-    #           (6,5): set([(6,6)]),
-    #           (0,0): set([(0,1),(1,0)]) => set([(0,1)],[(1,0)])
-    # }
 
     for n in range(2,10):
         trails = travel_path(trails, trailmap, str(n))
