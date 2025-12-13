@@ -95,4 +95,5 @@ def test_part1():
     assert part1(puzzle) == 512
 
 def test_part2():
-    pass
+    assert part2(sample5) == 81
+    assert part2(puzzle) == 1045
