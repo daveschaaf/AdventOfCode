@@ -3,20 +3,29 @@ import pytest
 from code10 import *
 from sample10 import *
 
-def test_trailheads():
-    assert trailheads(parse_trailmap(sample1)) == {(0,0): set([(0,1),(1,0)])}
-    assert trailheads(parse_trailmap(sample2)) == {(0,3): set([(1,3)])}
-    assert trailheads(parse_trailmap(sample3)) == {(0,3): set([(1,3)])}
-    assert trailheads(parse_trailmap(sample4)) == {(0,1): set([(0,0)]),(6,5): set([(6,6)])}
 
-def test_trailheads_for_paths():
+
+# FIXTURES
+
+
+@pytest.mark.parametrize("sample, expected_output", [
+    # (sample_input, expected_output)
+    (sample1, {(0,0): set([(0,1),(1,0)])}),
+    (sample2, {(0,3): set([(1,3)])}),
+    (sample3, {(0,3): set([(1,3)])}),
+    (sample4, {(0,1): set([(0,0)]),(6,5): set([(6,6)])}),
+])
+def test_trailheads(sample, expected_output):
+    trailmap = parse_trailmap(sample)
+    assert trailheads(trailmap) == expected_output
+
+@pytest.fixture
+def trailheads_paths_s1():
+    return {(0,0): {((0,0), (0,1)), ((0,0), (1,0))}}
+def test_trailheads_for_paths(trailheads_paths_s1):
     trailmap = parse_trailmap(sample1)
     trails = trailheads_for_paths(trailmap)
-    assert trails == {(0,0): {
-                                ((0,0), (0,1)), 
-                                ((0,0), (1,0))
-                              }
-                      }
+    assert trails == trailheads_paths_s1
 
 def test_parse_trailmap():
     sample5_trailmap = parse_trailmap(sample5)
