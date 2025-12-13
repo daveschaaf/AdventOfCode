@@ -32,7 +32,7 @@ def travel(trails, trailmap):
             path_steps = next_step(path, trailmap, next_val)
             steps.update(path_steps)
         trails[origin] = steps
-    return trails, trailmap
+    return trails
 
 def next_step(path, trailmap, next_val):
     r_bound = len(trailmap)
@@ -79,7 +79,7 @@ def part1(trailmap_input):
     trailmap = parse_trailmap(trailmap_input)
     trails = trailheads(trailmap)
     for n in range(2,10):
-        trails, trailmap = travel(trails, trailmap)
+        trails = travel(trails, trailmap)
         debug(f"{n} = {trails}")
     return score(trails)
 
@@ -87,3 +87,5 @@ def part2(trailmap_input):
     debug("###### PART 2 ######")
     trailmap = parse_trailmap(trailmap_input)
     trails = trailheads(trailmap)
+    for n in range(2,10):
+        trail

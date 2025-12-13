@@ -36,7 +36,7 @@ def test_travel():
         trails = trailheads(trailmap)
         assert trails == expectation[0]
         for n in range(1,9):
-            trails, trailmap = travel(trails, trailmap)
+            trails = travel(trails, trailmap)
             assert trails == expectation[n]
 
 
