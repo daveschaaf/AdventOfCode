@@ -4,10 +4,10 @@ from code10 import *
 from sample10 import *
 
 def test_trailheads():
-    assert trailheads(parse_trailmap(sample1))[0] == {(0,0): set([(0,1),(1,0)])}
-    assert trailheads(parse_trailmap(sample2))[0] == {(0,3): set([(1,3)])}
-    assert trailheads(parse_trailmap(sample3))[0] == {(0,3): set([(1,3)])}
-    assert trailheads(parse_trailmap(sample4))[0] == {(0,1): set([(0,0)]),(6,5): set([(6,6)])}
+    assert trailheads(parse_trailmap(sample1)) == {(0,0): set([(0,1),(1,0)])}
+    assert trailheads(parse_trailmap(sample2)) == {(0,3): set([(1,3)])}
+    assert trailheads(parse_trailmap(sample3)) == {(0,3): set([(1,3)])}
+    assert trailheads(parse_trailmap(sample4)) == {(0,1): set([(0,0)]),(6,5): set([(6,6)])}
 
 
 def test_parse_trailmap():
@@ -19,7 +19,6 @@ def test_parse_trailmap():
 
 def test_next_step():
     trailmap = parse_trailmap(sample1)
-    _, trailmap = trailheads(trailmap)
     steps1 = next_step((0,0), trailmap, "1")
     expectation = set([(0,1),(1,0)])
     assert steps1 == expectation
@@ -34,7 +33,7 @@ def test_next_step():
 def test_travel():
     def assert_travel(sample, expectation):
         trailmap = parse_trailmap(sample)
-        trails, trailmap = trailheads(trailmap)
+        trails = trailheads(trailmap)
         assert trails == expectation[0]
         for n in range(1,9):
             trails, trailmap = travel(trails, trailmap)

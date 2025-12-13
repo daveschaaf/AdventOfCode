@@ -20,7 +20,7 @@ def trailheads(trailmap):
             if trailmap[r][c] == "0":
                 loc = tuple([r,c])
                 zeros[loc] = next_step(loc, trailmap, "1")
-    return zeros, trailmap
+    return zeros
 
 def travel(trails, trailmap):
     any_trailpoint = list(list(trails.values())[0])[0]
@@ -48,6 +48,28 @@ def next_step(path, trailmap, next_val):
                 steps.add(tuple([r,c]))
     return steps
 
+def find_path(path, trailmap, next_val):
+    # {
+    #     (0,0): {
+    #         [series of steps],
+    #         [series of setps]
+    #     } # set
+    # }
+    r_bound = len(trailmap)
+    c_bound = len(trailmap[0])
+    steps = set()
+    step_options = [(path[0]+1,path[1]),(path[0],path[1]+1),
+                    (path[0]-1,path[1]),(path[0],path[1]-1)]
+    for step in step_options:
+        r = step[0]
+        c = step[1]
+        if (r>=0 and r<r_bound) and (c>=0 and c<c_bound):
+            if trailmap[r][c] == next_val:
+                steps.add(tuple([r,c]))
+    return steps
+
+
+
 def score(trails):
     nines = sum([len(paths) for paths in trails.values()])
     return nines
@@ -55,9 +77,13 @@ def score(trails):
 def part1(trailmap_input):
     debug("#################")
     trailmap = parse_trailmap(trailmap_input)
-    trails, trailmap = trailheads(trailmap)
+    trails = trailheads(trailmap)
     for n in range(2,10):
         trails, trailmap = travel(trails, trailmap)
         debug(f"{n} = {trails}")
     return score(trails)
 
+def part2(trailmap_input):
+    debug("###### PART 2 ######")
+    trailmap = parse_trailmap(trailmap_input)
+    trails = trailheads(trailmap)
