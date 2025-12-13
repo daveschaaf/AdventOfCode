@@ -22,6 +22,22 @@ def trailheads(trailmap):
                 zeros[loc] = next_step(loc, trailmap, "1")
     return zeros
 
+def trailheads_for_paths(trailmap):
+    n_rows = len(trailmap)
+    n_cols = len(trailmap[0])
+    zeros = dict()
+    for r in range(n_rows):
+        for c in range(n_cols):
+            if trailmap[r][c] == "0":
+                loc = (r,c)
+                paths = set()
+                next_steps = next_step(loc, trailmap, "1")
+                if len(next_steps) > 0:
+                    for step in next_steps:
+                        paths.add( (loc, step) )
+                zeros[loc] = paths
+    return zeros
+
 def travel(trails, trailmap):
     any_trailpoint = list(list(trails.values())[0])[0]
     current_val = int(trailmap[any_trailpoint[0]][any_trailpoint[1]])
@@ -33,6 +49,29 @@ def travel(trails, trailmap):
             steps.update(path_steps)
         trails[origin] = steps
     return trails
+
+def travel_path(trails, trailmap, next_val):
+    for origin, paths in trails.items():
+        # items = {
+        #     (0,0): {
+        #         [series of steps],
+        #         [series of setps]
+        #     } # set
+        # }
+        fresh_paths = set()
+        for path in paths:
+            # path = [series of tuples]
+            # find all the possible next steps
+            path_steps = next_step(path[-1], trailmap, next_val)
+            # for each of the returned steps
+            # add a full path series to the origin
+            if len(path_steps) > 0:
+                for step in path_steps:
+                    full_path = path + (step,) # This is some funky syntax....
+                    fresh_paths.add(full_path)
+        trails[origin] = fresh_paths
+    return trails
+
 
 def next_step(path, trailmap, next_val):
     r_bound = len(trailmap)
@@ -86,6 +125,14 @@ def part1(trailmap_input):
 def part2(trailmap_input):
     debug("###### PART 2 ######")
     trailmap = parse_trailmap(trailmap_input)
-    trails = trailheads(trailmap)
+    trails = trailheads_for_paths(trailmap)
+    # trails = {
+    #           (0,1): set([(0,0)]),
+    #           (6,5): set([(6,6)]),
+    #           (0,0): set([(0,1),(1,0)]) => set([(0,1)],[(1,0)])
+    # }
+
     for n in range(2,10):
-        trail
+        trails = travel_path(trails, trailmap, str(n))
+    return score(trails)
+

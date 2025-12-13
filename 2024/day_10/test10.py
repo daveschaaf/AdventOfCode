@@ -9,6 +9,14 @@ def test_trailheads():
     assert trailheads(parse_trailmap(sample3)) == {(0,3): set([(1,3)])}
     assert trailheads(parse_trailmap(sample4)) == {(0,1): set([(0,0)]),(6,5): set([(6,6)])}
 
+def test_trailheads_for_paths():
+    trailmap = parse_trailmap(sample1)
+    trails = trailheads_for_paths(trailmap)
+    assert trails == {(0,0): {
+                                ((0,0), (0,1)), 
+                                ((0,0), (1,0))
+                              }
+                      }
 
 def test_parse_trailmap():
     sample5_trailmap = parse_trailmap(sample5)
@@ -51,13 +59,19 @@ def test_travel():
                                 {(0,0):set([(2,0),(3,1)])},
                                 {(0,0):set([(3,0)])}
                                ])
-
+def test_travel_path():
+    trailmap = parse_trailmap(sample1)
+    trails = trailheads_for_paths(trailmap)
 
 def test_score():
     assert score({(0,0):set([(2,3)])}) == 1
     assert score({(0,0):set([(2,0),(3,1)])}) == 2
     assert score({(0,1): set([(0,0)]),(6,5): set([(6,6)])}) == 2
-    
+    # part 2
+    assert score({
+        (0,1): { ((0,1),), ((1,0),) },
+        (6,5): { ((6,6),) }
+    }) == 3
 
 def test_part1():
     assert part1(sample1) == 1
@@ -67,3 +81,5 @@ def test_part1():
     assert part1(sample5) == 36
     assert part1(puzzle) == 512
 
+def test_part2():
+    pass
