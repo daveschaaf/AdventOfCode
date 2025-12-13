@@ -55,10 +55,16 @@ def test_travel():
 
 
 def test_score():
-    assert score(sample1) == 1
-    assert score(sample2) == 2
-    assert score(sample3) == 4
-    assert score(sample4) == 3
-    assert score(sample5) == 36
-    assert score(puzzle) == 512
+    assert score({(0,0):set([(2,3)])}) == 1
+    assert score({(0,0):set([(2,0),(3,1)])}) == 2
+    assert score({(0,1): set([(0,0)]),(6,5): set([(6,6)])}) == 2
+    
+
+def test_part1():
+    assert part1(sample1) == 1
+    assert part1(sample2) == 2
+    assert part1(sample3) == 4
+    assert part1(sample4) == 3
+    assert part1(sample5) == 36
+    assert part1(puzzle) == 512
 

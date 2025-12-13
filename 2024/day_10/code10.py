@@ -6,12 +6,10 @@ def debug(message):
     if DEBUG:
         print(message)
 
-
 def parse_trailmap(trailmap_input):
     trailmap = trailmap_input.split("\n")
     trailmap = [list(row) for row in list(filter(lambda c: c != "\n", trailmap))]
     return trailmap
-
 
 def trailheads(trailmap):
     n_rows = len(trailmap)
@@ -50,13 +48,16 @@ def next_step(path, trailmap, next_val):
                 steps.add(tuple([r,c]))
     return steps
 
+def score(trails):
+    nines = sum([len(paths) for paths in trails.values()])
+    return nines
 
-def score(trailmap_input):
+def part1(trailmap_input):
     debug("#################")
     trailmap = parse_trailmap(trailmap_input)
     trails, trailmap = trailheads(trailmap)
     for n in range(2,10):
         trails, trailmap = travel(trails, trailmap)
         debug(f"{n} = {trails}")
-    nines = sum([len(paths) for paths in trails.values()])
-    return nines
+    return score(trails)
+
