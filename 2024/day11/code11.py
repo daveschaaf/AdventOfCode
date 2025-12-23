@@ -42,19 +42,27 @@ class Blinker():
         self.memory = {}
 
     def count_stones(self, val, times):
+        # Base case - a sinlge stone
         if times == 0:
             return 1
+
+        # hashable key
         current = (val, times)
+        # check if we've calculated this key previously
         if current in self.memory:
             return self.memory[current]
-
+        
+        # find the next value after a blink 
         total = 0
         for stone in self.blink_val(val):
+            # for each of the new stones, count the stones after them
             total += self.count_stones(stone, times - 1)
+        # once calculated add the total to memory
         self.memory[current] = total
         return total
 
     def length_after_times(self, times):
+        #add all the stone count for each values in the puzzle
         return sum([self.count_stones(stone, times) for stone in self.puzzle_array])
     
     def blink_val(self, val):
