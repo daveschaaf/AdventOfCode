@@ -1,6 +1,6 @@
 # 2024 Day 10 Code
 
-DEBUG = True
+DEBUG = False 
 
 def debug(message):
     if DEBUG:
