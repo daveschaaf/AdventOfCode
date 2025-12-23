@@ -17,5 +17,10 @@ def blink(input_array):
             blinked_array.append(int(x_str[blinked_len:]))
         else:
             blinked_array.append(x*2024)
-
     return blinked_array
+
+def blink_times(input_array, times):
+    for _ in range(times):
+        input_array = blink(input_array)
+    return input_array
+

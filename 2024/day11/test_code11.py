@@ -1,7 +1,8 @@
-from code11 import parse_input, blink
+from code11 import parse_input, blink, blink_times
 
 
 sample1 = "0 1 10 99 999"
+sample2 = "125 17"
 
 def test_parse_input():
     result = parse_input(sample1)
@@ -30,3 +31,33 @@ def test_rule_3():
     assert result[3] == 0
     assert result[4] == 9
     assert result[5] == 9
+
+blink_series = """125 17
+253000 1 7
+253 0 2024 14168
+512072 1 20 24 28676032
+512 72 2024 2 0 2 4 2867 6032
+1036288 7 2 20 24 4048 1 4048 8096 28 67 60 32
+2097446912 14168 4048 2 0 2 4 40 48 2024 40 48 80 96 2 8 6 7 6 0 3 2"""
+blink_series_inputs = blink_series.split("\n")
+blink_series_result = [list(map(int,t.split(" "))) for t in blink_series_inputs]
+start = [125, 17]
+def test_blink_one_time():
+    assert start == blink_series_result[0]
+    assert blink(start) == blink_series_result[1]
+
+def test_blink_two_times():
+    assert blink(blink(start)) == blink_series_result[2]
+    assert blink_times(start, 2) == blink_series_result[2]
+
+def test_blink_n_times():
+    for i in range(3, 7):
+        assert blink_times(start, i) == blink_series_result[i]
+puzzle = "1750884 193 866395 7 1158 31 35216 0"
+
+def test_part1():
+    puzzle_array = parse_input(puzzle)
+    assert len(blink_times(puzzle_array, 25)) == 231278
+def test_part2():
+    puzzle_array = parse_input(puzzle)
+    assert len(blink_times(puzzle_array, 75)) == -1 
