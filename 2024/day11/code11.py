@@ -1,3 +1,4 @@
+from collections import defaultdict
 def parse_input(input):
     return list(map(int, input.split(" ")))
 
@@ -24,3 +25,45 @@ def blink_times(input_array, times):
         input_array = blink(input_array)
     return input_array
 
+def blink_val(val):
+    if val == 0:
+        return [1]
+    x_str = str(val)
+    x_len = len(x_str)
+    if x_len % 2 == 0:
+        blinked_len = x_len//2
+        return [int(x_str[:blinked_len]), int(x_str[blinked_len:])]
+    else:
+        return [val*2024]
+
+class Blinker():
+    def __init__(self, puzzle_input):
+        self.puzzle_array = parse_input(puzzle_input)
+        self.memory = {}
+
+    def count_stones(self, val, times):
+        if times == 0:
+            return 1
+        current = (val, times)
+        if current in self.memory:
+            return self.memory[current]
+
+        total = 0
+        for stone in self.blink_val(val):
+            total += self.count_stones(stone, times - 1)
+        self.memory[current] = total
+        return total
+
+    def length_after_times(self, times):
+        return sum([self.count_stones(stone, times) for stone in self.puzzle_array])
+    
+    def blink_val(self, val):
+        if val == 0:
+            return [1]
+        x_str = str(val)
+        x_len = len(x_str)
+        if x_len % 2 == 0:
+            blinked_len = x_len//2
+            return [int(x_str[:blinked_len]), int(x_str[blinked_len:])]
+        else:
+            return [val*2024]

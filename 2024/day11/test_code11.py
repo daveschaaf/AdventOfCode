@@ -1,4 +1,5 @@
-from code11 import parse_input, blink, blink_times
+import pytest
+from code11 import parse_input, blink, blink_times, blink_val, Blinker
 
 
 sample1 = "0 1 10 99 999"
@@ -53,11 +54,20 @@ def test_blink_two_times():
 def test_blink_n_times():
     for i in range(3, 7):
         assert blink_times(start, i) == blink_series_result[i]
-puzzle = "1750884 193 866395 7 1158 31 35216 0"
 
+puzzle = "1750884 193 866395 7 1158 31 35216 0"
+puzzle_array = parse_input(puzzle)
 def test_part1():
-    puzzle_array = parse_input(puzzle)
     assert len(blink_times(puzzle_array, 25)) == 231278
+
+def test_blink_val():
+    """It returns an array that follows the rules for a single val"""
+    assert blink_val(125) == [253000]
+    assert blink_val(17) == [1,7]
+    assert blink_val(253000) == [253, 0]
+    assert blink_val(0) == [1]
+
 def test_part2():
-    puzzle_array = parse_input(puzzle)
-    assert len(blink_times(puzzle_array, 75)) == -1 
+    blinker = Blinker(puzzle)
+    assert blinker.length_after_times(75) == 274229228071551
+
