@@ -74,6 +74,7 @@ def test_map1_E():
     assert_raw_map(map1, (3,2), 3, 8)
 
 def test_region_plot_corners():
+    """it counts the correct sides for simple maps"""
     parsed_map = parse_map("0")
     cell = (0,0)
     region = Region(parsed_map, cell)
@@ -87,16 +88,16 @@ def assert_region_sides(map, cell, sides):
     parsed_map = parse_map(map)
     region = Region(parsed_map, cell)
     assert region.sides == sides
+
 def test_region_sides_outside():
     """it counts outside corners"""
     assert_region_sides(map1, (0,0), 4)
     assert_region_sides(map1, (1,0), 4)
     assert_region_sides(map1, (3,2), 4)
+
 def test_region_sides_inside():
     """it counts inside corners"""
     assert_region_sides(map1, (2,2), 8)
-
-
 
 def test_part1():
     """it returns the total price of the garden"""
@@ -106,6 +107,7 @@ def test_part1():
     assert part1(puzzle)== 1485656
 
 def test_part2():
+    """it returns the discounted price of the garden"""
     assert part2(map1) == 80
     assert part2(map_e) == 236
     assert part2(map_ab) == 368
