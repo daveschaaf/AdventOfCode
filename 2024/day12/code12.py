@@ -5,8 +5,8 @@ def parse_map(raw_map):
 
 class Region():
     def __init__(self, parsed_map, starting_cell):
-        self.area = 1
-        self.perimeter = 4
+        self.area = 0
+        self.perimeter = 0
         self.garden = parsed_map
         self.nrow = len(parsed_map)
         self.ncol = len(parsed_map[0])
@@ -26,6 +26,7 @@ class Region():
         if cell in self.visited:
             return 0
         self.visited.add(cell)
+        self.area += 1
         
         up = (cell[0]-1, cell[1])
         down = (cell[0]+1, cell[1])

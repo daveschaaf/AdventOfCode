@@ -23,9 +23,9 @@ parsed_map1 = parse_map(map1)
 def assert_raw_map(raw_map, starting, area, perimeter):
     parsed_map = parse_map(raw_map)
     region = Region(parsed_map, starting)
-    #assert region.area == area
+    assert region.area == area
     assert region.perimeter == perimeter
-    #assert region.price() == area * perimeter
+    assert region.price() == area * perimeter
 
 def test_region_get_value():
     """it returns the value"""
