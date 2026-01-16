@@ -1,5 +1,5 @@
 import pytest
-from code12 import parse_map, Region, part1, part2
+from code12_refactor import parse_map, Region, part1, part2
 from data12 import *
 
 
