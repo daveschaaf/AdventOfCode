@@ -5,8 +5,6 @@ def parse_map(raw_map):
 
 class Region():
     def __init__(self, parsed_map, starting_cell):
-        self.area = 0
-        self.perimeter = 0
         self.garden = parsed_map
         self.nrow = len(parsed_map)
         self.ncol = len(parsed_map[0])
@@ -23,26 +21,42 @@ class Region():
     def plot_garden(self, cell):
         # self.perimeter, _ = self.dfs_perimeter(cell, value)
         self.find_garden_cells(cell)
+        self.calculate_perimeter()
+        print(f"{self.perimeter=}")
 
     def find_garden_cells(self, starting_cell):
         """
         Replaces dfs_perimeter
         Populates self.plots with all the connected cells of the same value
         Perimeter count should be handled separately
+        Counts the area
         """
+        self.area = 0
         stack = [starting_cell]
 
         while stack:
-            print(stack)
             r, c = stack.pop()
-            if (r, c) in self.plots or self.get_value(r, c) != self.value:
+            if (r, c) in self.plots:
                 continue
             
             self.plots.add((r, c))
+            self.area += 1
+
             for ortho_r, ortho_c in [(r+1, c), (r-1, c), (r, c+1), (r, c-1)]:
-                stack.append((ortho_r, ortho_c))
+                if (ortho_r, ortho_c) not in self.plots and self.get_value(ortho_r, ortho_c) == self.value:
+                    stack.append((ortho_r, ortho_c))
+    
+    def calculate_perimeter(self):
+        self.perimeter = 0
+        for r, c in self.plots:
+            for ortho_r, ortho_c in [(r+1, c), (r-1, c), (r, c+1), (r, c-1)]:
+                if (ortho_r, ortho_c) not in self.plots:
+                    print("incrementing perimeter")
+                    self.perimeter += 1
+        print(self.perimeter)
 
-
+    def calculate_sides(self):
+        self.sides = 0
 
     # def dfs_perimeter(self, cell, value):
     #     if self.get_value(*cell) != value:
