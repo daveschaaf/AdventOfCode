@@ -87,8 +87,25 @@ class Region():
                 'ul': ul, 'ur': ur, 'dl': dl, 'dr': dr}
         return udlr 
 
+def calc_total_price(raw_map, pricing):
+    parsed_map = parse_map(raw_map)
+    total_price = 0
+    plotted = set()
+    for row in range(len(parsed_map)):
+        for col in range(len(parsed_map[0])):
+            plot = (row, col)
+            if plot not in plotted:
+                region = Region(parsed_map, plot)
+                if pricing == "standard":
+                    total_price += region.price()
+                else:
+                    total_price += region.discounted_price()
+                plotted = plotted.union(region.plots)
+    return total_price
 
 def part1(raw_map):
+    return calc_total_price(raw_map, "standard")
+
     parsed_map = parse_map(raw_map)
     total_price = 0
     plotted = set()
@@ -103,6 +120,7 @@ def part1(raw_map):
 
 
 def part2(raw_map):
+    return calc_total_price(raw_map, "discounted")
     parsed_map = parse_map(raw_map)
     total_price = 0
     plotted = set()
