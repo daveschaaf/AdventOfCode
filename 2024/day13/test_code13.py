@@ -1,6 +1,8 @@
+import pytest
 import numpy as np
+from sympy import N, Integer
 import numpy.testing as npt
-from code13 import parse_data, ClawMachine, part1
+from code13 import parse_data, ClawMachine, part1, part2
 
 sample = """Button A: X+94, Y+34
 Button B: X+22, Y+67
@@ -42,10 +44,10 @@ def test_claw_solution():
     claw3 = ClawMachine(data[2])
     claw4 = ClawMachine(data[3])
 
-    npt.assert_allclose(claw1.solution(claw1.prize), np.array([80, 40]))
-    npt.assert_allclose(claw2.solution(claw2.prize), np.array([0, 0]))
-    npt.assert_allclose(claw3.solution(claw3.prize), np.array([38, 86]))
-    npt.assert_allclose(claw4.solution(claw4.prize), np.array([0, 0]))
+    npt.assert_allclose(claw1.solution(), np.array([80, 40]))
+    npt.assert_allclose(claw2.solution(), np.array([0, 0]))
+    npt.assert_allclose(claw3.solution(), np.array([38, 86]))
+    npt.assert_allclose(claw4.solution(), np.array([0, 0]))
 
 def test_claw_solve():
     data = parse_data(sample)
@@ -62,10 +64,12 @@ def test_part_1():
     assert part1() == 35255
     # 26767 too low
 
+
 def test_converted_prize():
     data = parse_data(sample)
-    claw4 = ClawMachine(data[3])
-    npt.assert_allclose(claw4.converted_prize, claw4.prize + 10000000000000)
+    claw1 = ClawMachine(data[0])
+    assert claw1.converted_prize[0] == Integer(10000000008400)
+    assert claw1.converted_prize[1] == Integer(10000000005400)
 
 def test_big_solve():
     data = parse_data(sample)
@@ -78,3 +82,7 @@ def test_big_solve():
     assert claw2.big_solve() > 0
     assert claw3.big_solve() == 0
     assert claw4.big_solve() > 0
+
+def test_part_2():
+    assert part2() == Integer(87582154060429)
+    # 60522696580589 too low
