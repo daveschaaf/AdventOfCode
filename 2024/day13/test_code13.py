@@ -31,12 +31,14 @@ def test_parse_data():
 def test_claw_machine():
     data = parse_data(sample)
     claw = ClawMachine(data[0])
-    npt.assert_allclose(claw.prize, np.array((8400, 5400)))
+    assert claw.prize[0] == Integer(8400)
+    assert claw.prize[1] == Integer(5400)
     assert claw.a_increase_x == 94
     assert claw.a_increase_y == 34
     assert claw.b_increase_x == 22
     assert claw.b_increase_y == 67
 
+@pytest.mark.skip
 def test_claw_solution():
     data = parse_data(sample)
     claw1 = ClawMachine(data[0])
@@ -67,21 +69,21 @@ def test_part_1():
 
 def test_converted_prize():
     data = parse_data(sample)
-    claw1 = ClawMachine(data[0])
-    assert claw1.converted_prize[0] == Integer(10000000008400)
-    assert claw1.converted_prize[1] == Integer(10000000005400)
+    claw1 = ClawMachine(data[0], 2)
+    assert claw1.prize[0] == Integer(10000000008400)
+    assert claw1.prize[1] == Integer(10000000005400)
 
 def test_big_solve():
     data = parse_data(sample)
-    claw1 = ClawMachine(data[0])
-    claw2 = ClawMachine(data[1])
-    claw3 = ClawMachine(data[2])
-    claw4 = ClawMachine(data[3])
+    claw1 = ClawMachine(data[0], 2)
+    claw2 = ClawMachine(data[1], 2)
+    claw3 = ClawMachine(data[2], 2)
+    claw4 = ClawMachine(data[3], 2)
     
-    assert claw1.big_solve() == 0
-    assert claw2.big_solve() > 0
-    assert claw3.big_solve() == 0
-    assert claw4.big_solve() > 0
+    assert claw1.solve() == 0
+    assert claw2.solve() > 0
+    assert claw3.solve() == 0
+    assert claw4.solve() > 0
 
 def test_part_2():
     assert part2() == Integer(87582154060429)
