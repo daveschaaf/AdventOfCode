@@ -9,21 +9,16 @@ class Region():
         self.nrow = len(parsed_map)
         self.ncol = len(parsed_map[0])
         self.plots = set()
-        self.sides = 0
         self.starting_cell = starting_cell
         self.value = self.get_value(*starting_cell)
-        self.plot_garden()
+        self.find_garden_cells()
+        self.calculate_perimeter()
+        self.calculate_sides()
         
     def price(self):
         return self.area * self.perimeter
     def discounted_price(self):
         return self.area * self.sides
-
-    def plot_garden(self):
-        # self.perimeter, _ = self.dfs_perimeter(cell, value)
-        self.find_garden_cells()
-        self.calculate_perimeter()
-        self.calculate_sides()
 
     def find_garden_cells(self):
         self.area = 0

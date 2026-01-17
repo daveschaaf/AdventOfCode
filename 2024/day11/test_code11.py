@@ -69,5 +69,6 @@ def test_blink_val():
 
 def test_part2():
     blinker = Blinker(puzzle)
+    assert blinker.length_after_times(25) == 231278 
     assert blinker.length_after_times(75) == 274229228071551
 

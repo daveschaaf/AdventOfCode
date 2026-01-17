@@ -5,7 +5,6 @@ from data12 import *
 
 def test_parse_map():
     parsed_map = parse_map(map1)
-    print(parsed_map)
     assert len(parsed_map) == 4
     assert len(parsed_map[1]) == 4
     assert isinstance(parsed_map, list)
