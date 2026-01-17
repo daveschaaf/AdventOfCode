@@ -14,24 +14,24 @@ def parse_data(raw_data):
         b_button = elements[1].split("B: ")[1].split(", ")
         prize = elements[2].split(": ")[1].split(", ")
         parsed_machine = {}
-        parsed_machine["A"] = [ int(move.split("+")[1]) for move in a_button]
-        parsed_machine["B"] = [ int(move.split("+")[1]) for move in b_button]
+        parsed_machine["A"] = tuple([ int(move.split("+")[1]) for move in a_button])
+        parsed_machine["B"] = tuple([ int(move.split("+")[1]) for move in b_button])
         parsed_machine["prize"] = tuple([ int(move.split("=")[1]) for move in prize])
         parsed_data.append(parsed_machine)
     return parsed_data
 
 class ClawMachine():
     def __init__(self, machine_data, part = 1):
-        self.a_increase_x = machine_data["A"][0]
-        self.a_increase_y = machine_data["A"][1]
-        self.b_increase_x = machine_data["B"][0]
-        self.b_increase_y = machine_data["B"][1]
+        a_x, a_y = (Integer(n) for n in machine_data["A"])
+        b_x, b_y = (Integer(n) for n in machine_data["B"])
         # Standard numpy matrices
-        self.matrix = Matrix([[self.a_increase_x, self.b_increase_x],
-                                [self.a_increase_y, self.b_increase_y]])
-        self.prize = Matrix(machine_data['prize'])
+        self.matrix = Matrix([[a_x, b_x],
+                              [a_y, b_y]])
+        self.prize = Matrix([Integer(n) for n in machine_data['prize']])
         if part != 1:
             self.prize += Matrix([Integer(10000000000000), Integer(10000000000000)])
+        self.token_cost = Matrix([3, 1])
+    
     def solve(self):
         def is_sp_int(x, tol=1e-16):
             if x.is_Integer:
@@ -43,7 +43,7 @@ class ClawMachine():
             solution = self.matrix.LUsolve(self.prize)
         except NonInvertibleMatrixError:
             return 0
-        dot_product = solution.dot(Matrix([3, 1]))
+        dot_product = solution.dot(self.token_cost)
         if all(is_sp_int(x) for x in solution) and is_sp_int(dot_product):
             return Integer(dot_product)
         return 0
