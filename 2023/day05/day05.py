@@ -19,11 +19,12 @@ def parse_data(filename):
                     key = label
                     label_line = True
             if not label_line and line != "\n":
-                print(f"{key=}")
-                print(f"{line=}")
                 codex = [int(x) for x in line.split(' ')]
                 output[key].append(codex)
             label_line = False
     return output
             
-
+def seed_to_soil(num, conversion_tables):
+    return num
+    
+    
