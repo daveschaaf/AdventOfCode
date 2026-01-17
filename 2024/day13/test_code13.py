@@ -1,7 +1,6 @@
 import pytest
-import numpy as np
-from sympy import N, Integer
-import numpy.testing as npt
+from sympy import Integer
+from sympy.matrices import Matrix
 from code13 import parse_data, ClawMachine, part1, part2
 
 sample = """Button A: X+94, Y+34
@@ -26,30 +25,16 @@ def test_parse_data():
     machine_data = data[0]
     assert machine_data["A"] == [94, 34]
     assert machine_data["B"] == [22, 67]
-    assert machine_data["prize"] == (8400, 5400)
+    assert machine_data["prize"] == [8400, 5400]
 
 def test_claw_machine():
     data = parse_data(sample)
     claw = ClawMachine(data[0])
     assert claw.prize[0] == Integer(8400)
     assert claw.prize[1] == Integer(5400)
-    assert claw.a_increase_x == 94
-    assert claw.a_increase_y == 34
-    assert claw.b_increase_x == 22
-    assert claw.b_increase_y == 67
-
-@pytest.mark.skip
-def test_claw_solution():
-    data = parse_data(sample)
-    claw1 = ClawMachine(data[0])
-    claw2 = ClawMachine(data[1])
-    claw3 = ClawMachine(data[2])
-    claw4 = ClawMachine(data[3])
-
-    npt.assert_allclose(claw1.solution(), np.array([80, 40]))
-    npt.assert_allclose(claw2.solution(), np.array([0, 0]))
-    npt.assert_allclose(claw3.solution(), np.array([38, 86]))
-    npt.assert_allclose(claw4.solution(), np.array([0, 0]))
+    assert claw.matrix == Matrix([[94, 22],
+                                  [34, 67]])
+    assert claw.token_cost == Matrix([3, 1])
 
 def test_claw_solve():
     data = parse_data(sample)
