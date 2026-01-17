@@ -1,3 +1,6 @@
+from sympy import Integer
+from sympy.matrices import Matrix
+
 def parse_data(raw_data):
     machine_data = raw_data.split("\n\n")
     parsed_data = []
@@ -14,6 +17,35 @@ def parse_data(raw_data):
     return parsed_data
 
 class ClawMachine():
-    def __init__(self, machine_data):
-       self.machine_data = machine_data
+    def __init__(self, machine_data, part = 1):
+        a_x, a_y = (Integer(n) for n in machine_data["A"])
+        b_x, b_y = (Integer(n) for n in machine_data["B"])
+        # Standard numpy matrices
+        self.matrix = Matrix([[a_x, b_x],
+                              [a_y, b_y]])
+        self.prize = Matrix([Integer(n) for n in machine_data['prize']])
+        if part != 1:
+            correction = Integer(10_000_000_000_000)
+            self.prize += Matrix([correction, correction])
+        self.token_cost = Matrix([3, 1])
+    
+    def solve(self):
+        solution = self.matrix.LUsolve(self.prize)
+        if all(x.q == 1 for x in solution):
+            return solution.dot(self.token_cost)
+        return 0
 
+def calc_tokens(part):
+    with open('data13.dat', 'r') as file:
+        file_content = file.read()
+    data = parse_data(file_content)
+    tokens = 0
+    for machine in data:
+        tokens += ClawMachine(machine, part).solve()
+    return tokens
+
+def part1():
+    return calc_tokens(1)
+
+def part2():
+    return calc_tokens(2)
